@@ -7,14 +7,14 @@ Migration
 - `0004_music_bucket.sql`: executed twice.
 - Both executions returned `Success. No rows returned`.
 - Bucket: `music`, private, 16 MiB limit.
-- Allowed types: audio/mpeg, audio/ogg, audio/wav, audio/x-wav, audio/mp4.
+- Allowed types: audio/mpeg, audio/wav, audio/x-wav, audio/mp4.
 - Storage policies: authenticated SELECT / INSERT / UPDATE / DELETE only.
 
 Browser flow
 - Opened "换音乐" from the authenticated site header.
-- Selected `public/audio/memory-theme.ogg`.
+- Selected `public/audio/memory-theme.mp3`.
 - Upload completed and the audio element switched to a Supabase signed Storage URL under `music/theme/`.
 - Reloaded the page: the custom track was found again and a fresh signed URL was used.
-- Selected "恢复默认": the audio source switched back to `/audio/memory-theme.ogg`.
+- Selected "恢复默认": the audio source switched back to `/audio/memory-theme.mp3`.
 - The custom object was removed by the reset operation.
 - Test data was cleaned; the live site remains on the bundled default track.

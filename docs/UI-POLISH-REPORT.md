@@ -24,10 +24,10 @@
 
 ## 3. 音乐
 
-- 默认音频：`public/audio/memory-theme.ogg`，58,006 bytes，文件头 `OggS`。
+- 默认音频：`public/audio/memory-theme.mp3`，400,658 bytes，MP3，33.36 秒。
 - 音乐播放与“换音乐”按钮位于 `masthead-actions`，均保持 44px 以上；播放时显示三条均衡器短线。
-- 登录后可从本机上传 16MB 内的 MP3、OGG、WAV 或 M4A 到 Supabase 私有 `music` 桶。
-- 真实回归：上传 OGG 后音频源切换到 Supabase 私有签名地址，刷新后仍读取自选音轨，恢复默认后重新使用打包音轨并清理自选文件。
+- 登录后可从本机上传 16MB 内的 MP3、WAV 或 M4A 到 Supabase 私有 `music` 桶。
+- 真实回归：上传 MP3 后音频源切换到 Supabase 私有签名地址，刷新后仍读取自选音轨，恢复默认后重新使用打包音轨并清理自选文件。
 - 不强制首次自动播放；减少动效时关闭均衡器动画。
 
 ## 4. 真实布局结果

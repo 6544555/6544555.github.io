@@ -29,9 +29,9 @@ describe('0004 private music bucket migration', () => {
     expect(musicMigration).toContain("'music'")
     expect(musicMigration).toContain('16777216')
     expect(musicMigration).toContain("'audio/mpeg'")
-    expect(musicMigration).toContain("'audio/ogg'")
     expect(musicMigration).toContain("'audio/wav'")
     expect(musicMigration).toContain("'audio/mp4'")
+    expect(musicMigration).not.toContain("'audio/ogg'")
 
     for (const policy of [
       'music_authenticated_select',

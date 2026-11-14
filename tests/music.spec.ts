@@ -5,7 +5,7 @@ import { resolveMusicUrl } from '../src/ui/BackgroundMusic'
 describe('background music configuration', () => {
   it('uses the bundled loop under the deployed base path', () => {
     expect(resolveMusicUrl('/birthday-memory/')).toBe(
-      '/birthday-memory/audio/memory-theme.ogg',
+      '/birthday-memory/audio/memory-theme.mp3',
     )
   })
 
@@ -38,6 +38,7 @@ describe('background music configuration', () => {
 
   it('rejects mismatched or unsupported music files', () => {
     expect(musicFileInfo('song.mp3', 'audio/ogg')).toBeNull()
+    expect(musicFileInfo('song.ogg', 'audio/ogg')).toBeNull()
     expect(musicFileInfo('song.txt', 'text/plain')).toBeNull()
     expect(musicFileInfo('song', '')).toBeNull()
   })

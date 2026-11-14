@@ -246,10 +246,10 @@
 
 ### `musicFileInfo(filename, mimeType): MusicFileInfo | null`
 说明：校验扩展名与 MIME，返回标准扩展名和上传 MIME。
-参数：文件名与浏览器 `File.type`；支持 MP3、OGG、WAV、M4A。
+参数：文件名与浏览器 `File.type`；支持 MP3、WAV、M4A。
 返回：`{ extension, mimeType }` 或 `null`。
 建议 UI：不支持的格式只在音乐设置层提示。
-示例：`musicFileInfo('theme.ogg', 'audio/ogg')`
+示例：`musicFileInfo('theme.mp3', 'audio/mpeg')`
 
 ### `loadCustomMusic(): Promise<StoredMusicTrack | null>`
 说明：列为当前 authenticated 用户可访问的私有 `music/theme` 对象，选择最新受支持音轨并签发 24 小时 URL。
@@ -266,16 +266,16 @@
 ### `resetCustomMusic(): Promise<void>`
 说明：删除 `music/theme` 下的全部自选音轨。
 参数：无。
-建议 UI：成功后切回 `public/audio/memory-theme.ogg`。
+建议 UI：成功后切回 `public/audio/memory-theme.mp3`。
 
 ## src/ui/BackgroundMusic.tsx
 
 ### `resolveMusicUrl(baseUrl, configuredUrl?): string`
-说明：优先使用 `VITE_BACKGROUND_MUSIC_URL`，否则返回部署 base 下的 `audio/memory-theme.ogg`。  
+说明：优先使用 `VITE_BACKGROUND_MUSIC_URL`，否则返回部署 base 下的 `audio/memory-theme.mp3`。
 参数：Vite `BASE_URL` 与可选自定义 URL。  
 返回：可直接赋给 `<audio src>` 的地址。  
 建议 UI：登录后才挂载；音频失败不影响主业务。  
-示例：`resolveMusicUrl('/birthday-memory/', 'audio/custom.ogg')`
+示例：`resolveMusicUrl('/birthday-memory/', 'audio/custom.mp3')`
 
 ### `BackgroundMusic()`
 说明：提供循环背景音乐的播放/暂停、自选上传、恢复默认、偏好恢复、错误降级和卸载暂停。

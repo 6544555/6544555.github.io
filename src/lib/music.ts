@@ -6,7 +6,7 @@ const MUSIC_PREFIX = 'theme'
 const SIGNED_URL_SECONDS = 86_400
 
 interface MusicFileInfo {
-  extension: 'mp3' | 'ogg' | 'wav' | 'm4a'
+  extension: 'mp3' | 'wav' | 'm4a'
   mimeType: string
 }
 
@@ -17,7 +17,6 @@ export interface StoredMusicTrack extends MusicFileInfo {
 
 const MIME_BY_EXTENSION: Record<MusicFileInfo['extension'], string> = {
   mp3: 'audio/mpeg',
-  ogg: 'audio/ogg',
   wav: 'audio/wav',
   m4a: 'audio/mp4',
 }
@@ -25,8 +24,6 @@ const MIME_BY_EXTENSION: Record<MusicFileInfo['extension'], string> = {
 const MIME_ALIASES: Record<string, MusicFileInfo['extension']> = {
   'audio/mpeg': 'mp3',
   'audio/mp3': 'mp3',
-  'audio/ogg': 'ogg',
-  'application/ogg': 'ogg',
   'audio/wav': 'wav',
   'audio/x-wav': 'wav',
   'audio/wave': 'wav',
@@ -46,12 +43,7 @@ function isOffline(): boolean {
 
 export function musicFileInfo(filename: string, mimeType: string): MusicFileInfo | null {
   const extension = filename.trim().split('.').pop()?.toLowerCase()
-  if (
-    extension !== 'mp3' &&
-    extension !== 'ogg' &&
-    extension !== 'wav' &&
-    extension !== 'm4a'
-  ) {
+  if (extension !== 'mp3' && extension !== 'wav' && extension !== 'm4a') {
     return null
   }
 
@@ -71,7 +63,7 @@ function assertMusicFile(file: File): MusicFileInfo {
 
   const info = musicFileInfo(file.name, file.type)
   if (!info || file.size === 0) {
-    throw new InputError('UNSUPPORTED_FORMAT', '请选择 MP3、OGG、WAV 或 M4A 音乐')
+    throw new InputError('UNSUPPORTED_FORMAT', '请选择 MP3、WAV 或 M4A 音乐')
   }
   return info
 }

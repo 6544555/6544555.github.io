@@ -12,7 +12,7 @@ values (
   'music',
   false,
   16777216,
-  array['audio/mpeg', 'audio/ogg', 'audio/wav', 'audio/x-wav', 'audio/mp4']
+  array['audio/mpeg', 'audio/wav', 'audio/x-wav', 'audio/mp4']
 )
 on conflict (id) do update
   set public = excluded.public,

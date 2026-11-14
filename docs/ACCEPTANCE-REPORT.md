@@ -38,7 +38,7 @@
 | A28 | 未验证 | 登录后 production | ZIP 在新会话恢复 | 鉴权改造后尚未重跑恢复闭环 |
 | A29 | 通过 | production 375 / 768 / 1440 | 渲染 7 张以上照片并检查主照片和轨道 | 每 7 张一张跨两列 3:2 主照片；375/768/1440 保持 2/3/4 轨道，无横向溢出；`docs/UI-POLISH-REPORT.md` |
 | A30 | 通过 | production 375 / 768 / 1440 | 检查气球、爱心、间距和点击层 | 两枚黑白线稿气球和两枚陈玫色爱心独立成带，与标题间距 20–34px，`aria-hidden` 且不拦截操作 |
-| A31 | 通过 | Edge production 375×812 + 私有 `music` Storage | 播放默认音轨；从“换音乐”上传 OGG；刷新；恢复默认 | 上传后的 `audio.src` 为 Supabase 私有签名地址；刷新后仍读到自选音轨；“恢复默认”后重新使用 `/audio/memory-theme.ogg`；迁移连续执行两次成功 |
+| A31 | 通过 | Edge production 375×812 + 私有 `music` Storage | 播放默认音轨；从“换音乐”上传 MP3；刷新；恢复默认 | 上传后的 `audio.src` 为 Supabase 私有签名地址；刷新后仍读到自选音轨；“恢复默认”后重新使用 `/audio/memory-theme.mp3`；迁移连续执行两次成功 |
 | A32 | 通过 | production 375 / 768 / 1440 | 核对暖米纸编辑部主题、字体、发丝线、留白、直角和响应式 | 页面底色 `#F9F8F6`、标题为衬线、正文为无衬线；375/768/1440 为 2/3/4 轨、无横向溢出；普通卡片无阴影且圆角为 0；音乐按钮 46px 高 |
 
 ## 真实 Supabase 配置
@@ -47,7 +47,7 @@
 - Auth Users：仅一个共享 Email 账号。
 - `0002` 已加历史保护：检测到 `0003` 的 authenticated 策略后跳过，不会重新开放匿名访问。
 - `0003_authenticated_access.sql`：连续两次执行成功。
-- `0004_music_bucket.sql`：连续两次执行成功；创建私有 `music` 桶（16MB，MP3/OGG/WAV/M4A）及 authenticated-only 策略。
+- `0004_music_bucket.sql`：连续两次执行成功；创建私有 `music` 桶（16MB，MP3/WAV/M4A）及 authenticated-only 策略。
 - 最终策略：三表 `authenticated / ALL`；`memories` 与 `music` Storage 均仅允许 authenticated。
 - 匿名 REST：`401`；匿名 Storage 对现有对象列表 `0` 行，上传、签名和下载均 `400`。
 - 唯一账号：登录/refresh `200`；三表与 Storage CRUD 成功，测试数据 remaining `0`。

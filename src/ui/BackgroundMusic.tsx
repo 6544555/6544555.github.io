@@ -10,7 +10,7 @@ import { Dialog } from './Dialog'
 import './background-music.css'
 
 const MUSIC_PREFERENCE_KEY = 'bday:v1:music-enabled'
-const DEFAULT_MUSIC_FILE = 'audio/memory-theme.ogg'
+const DEFAULT_MUSIC_FILE = 'audio/memory-theme.mp3'
 
 export function resolveMusicUrl(baseUrl: string, configuredUrl?: string): string {
   const custom = configuredUrl?.trim()
@@ -213,7 +213,7 @@ export function BackgroundMusic() {
               ref={inputRef}
               className="visually-hidden"
               type="file"
-              accept=".mp3,.ogg,.wav,.m4a,audio/mpeg,audio/ogg,audio/wav,audio/mp4"
+              accept=".mp3,.wav,.m4a,audio/mpeg,audio/wav,audio/mp4"
               tabIndex={-1}
               onChange={(event) => void handleFile(event.target.files?.[0])}
             />

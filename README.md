@@ -67,16 +67,16 @@ GitHub Actions 使用仓库 Secrets：
 
 ## 背景音乐
 
-默认音轨为 `public/audio/memory-theme.ogg`，登录后通过页头的“背景音乐”按钮播放。浏览器的自动播放限制会让首次播放需要一次点击；暂停后会记住偏好。
+默认音轨为 `public/audio/memory-theme.mp3`，登录后通过页头的“背景音乐”按钮播放。浏览器的自动播放限制会让首次播放需要一次点击；暂停后会记住偏好。
 
 更换音乐：
 
 1. 登录后点页头“换音乐”。
-2. 选择不超过 16MB 的 MP3、OGG、WAV 或 M4A。
+2. 选择不超过 16MB 的 MP3、WAV 或 M4A。
 3. 音轨会上传到私有 `music` Storage，刷新和其他设备登录后继续使用。
 4. 点“恢复默认”可删除自选音轨并切回打包音轨。
 
-仍需在构建时固定默认音轨时，可替换 `public/audio/memory-theme.ogg` 或设置 `VITE_BACKGROUND_MUSIC_URL`。
+仍需在构建时固定默认音轨时，可替换 `public/audio/memory-theme.mp3` 或设置 `VITE_BACKGROUND_MUSIC_URL`。
 
 ## GitHub Pages
 
