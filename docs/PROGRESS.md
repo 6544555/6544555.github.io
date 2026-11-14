@@ -7,7 +7,7 @@
 | S1 契约 | 完成 | 六份 S1 文档已通过 `CONTRACT_CHANGE.md` 同步为关闭注册、单一 Supabase Auth 共享账号 |
 | S2 数据层 | 完成 | 10 个测试文件、46 项测试通过；`0003_authenticated_access.sql` 已完成 |
 | S3 UI 集成 | 完成 | 单账号登录、会话恢复、退出、公开壳层和私密卸载已接入 |
-| S3 UI 精修与音乐 | 完成 | 非均匀照片编排、黑白气球/粉色爱心点缀、可替换背景音乐已接入 |
+| S3 UI 精修与音乐 | 完成 | 暖米纸编辑部视觉、非均匀照片编排、黑白气球/陈玫色爱心点缀、可替换背景音乐已接入 |
 | S4 本地门禁 | 完成 | `npm test` 46/46、`npm run typecheck`、`npm run build` 均通过 |
 | S4 Auth 平台配置 | 完成 | 公开注册已关闭；Auth Users 仅保留一个共享邮箱账号 |
 | S4 Auth 迁移 | 完成 | `0003` 在 Supabase SQL Editor 连续执行两次成功；旧开放策略已撤销 |

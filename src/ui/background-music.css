@@ -1,33 +1,31 @@
-.masthead-actions {
-  display: flex;
-  flex: 0 0 auto;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
 .music-control {
   flex: 0 0 auto;
 }
 
 .music-toggle {
+  min-height: 46px;
   display: inline-flex;
-  min-height: 44px;
   align-items: center;
-  gap: 8px;
-  padding: 0 12px;
-  border: 1px solid var(--line);
+  gap: 10px;
+  padding: 0 16px;
+  border: 1px solid var(--ink);
   border-radius: 0;
-  background: var(--paper);
+  background: transparent;
   color: var(--ink);
   font: inherit;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  transition:
+    color var(--motion-fast),
+    background-color var(--motion-fast),
+    border-color var(--motion-fast);
 }
 
 .music-toggle:hover:not(:disabled) {
-  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
 }
 
 .music-toggle[aria-pressed="true"] {
@@ -37,6 +35,8 @@
 }
 
 .music-toggle:disabled {
+  border-color: rgba(28, 28, 28, 0.16);
+  color: var(--graphite);
   cursor: default;
 }
 
@@ -77,8 +77,12 @@
 
 @media (max-width: 767px) {
   .masthead-actions {
+    display: flex;
     width: 100%;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 }
 

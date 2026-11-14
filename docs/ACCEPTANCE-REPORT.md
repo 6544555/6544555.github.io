@@ -25,7 +25,7 @@
 | A15 | 通过 | `prefers-reduced-motion: reduce` | 读取 computed transform | 动效缩减规则生效，照片无位移 |
 | A16 | 未验证 | production | 完整纯键盘旅程 | 登录、上传、大图和表单完整旅程未一次跑通 |
 | A17 | 通过 | production 375 / 768 / 1440 | 扫描可见按钮和链接 | 小于 `44×44px` 控件均为 `0` |
-| A18 | 通过 | DESIGN v4 + CSS | 核对黑白灰主体与粉色爱心 token | 使用登记的黑白灰 6 个主体 token 与 `heart #D78A9F` 专用装饰 token；粉色未进入正文、按钮或状态 |
+| A18 | 通过 | DESIGN v5 + CSS | 核对暖米纸编辑部 token 与排版 | 使用 ink/paper/graphite/mauve/wash/rule/white 七个登记 token；标题衬线、正文无衬线；陈玫色未进入正文、按钮或状态 |
 | A19 | 未验证 | production | 完整对比度与 alt 扫描 | 改版后的全量可读性扫描尚未归档 |
 | A20 | 通过 | 源码 + production | 检查索引和 robots | `noindex, nofollow` 与 `robots.txt: Disallow: /` 存在 |
 | A21 [P0] | 通过 | 登录后 Edge，真实离线 | 登录后切离线并刷新 | 主站、本地文本快照和离线文案可见，无白屏 |
@@ -37,8 +37,9 @@
 | A27 [P0] | 通过 | 本地 Git 仓库 `main` | 初始化、创建根提交、检查 `.env` 历史/索引和工作区 | `.env` 历史 0 条；`git ls-files --error-unmatch .env` 退出 1；工作区干净；`docs/evidence/A27-git-isolation.txt` |
 | A28 | 未验证 | 登录后 production | ZIP 在新会话恢复 | 鉴权改造后尚未重跑恢复闭环 |
 | A29 | 通过 | production 375 / 768 / 1440 | 渲染 7 张以上照片并检查主照片和轨道 | 每 7 张一张跨两列 3:2 主照片；375/768/1440 保持 2/3/4 轨道，无横向溢出；`docs/UI-POLISH-REPORT.md` |
-| A30 | 通过 | production 375 / 768 / 1440 | 检查气球、爱心、间距和点击层 | 两枚黑白线稿气球和两枚粉色爱心独立成带，与标题间距 20–34px，`aria-hidden` 且不拦截操作 |
+| A30 | 通过 | production 375 / 768 / 1440 | 检查气球、爱心、间距和点击层 | 两枚黑白线稿气球和两枚陈玫色爱心独立成带，与标题间距 20–34px，`aria-hidden` 且不拦截操作 |
 | A31 | 通过 | Edge production + OGG 文件 | 点击播放/暂停并检查布局和 MIME | 按钮 92×44px，实际进入播放态；音频 58,006 bytes、33.3 秒 OGG；三档无导航挤压 |
+| A32 | 通过 | production 375 / 768 / 1440 | 核对暖米纸编辑部主题、字体、发丝线、留白、直角和响应式 | 页面底色 `#F9F8F6`、标题为衬线、正文为无衬线；375/768/1440 为 2/3/4 轨、无横向溢出；普通卡片无阴影且圆角为 0；音乐按钮 46px 高 |
 
 ## 真实 Supabase 配置
 
