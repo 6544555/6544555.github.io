@@ -5114,9 +5114,43 @@ p {
   }
 }
 
-/* Login validation stays inside the paper, v8. */
+/* Login validation and focus stay inside the paper, v8. */
 .gate-form {
   position: relative;
+}
+
+.gate-form .line-field {
+  border-bottom: 1px solid var(--rule-16);
+  box-shadow: inset 0 -1px 0 transparent;
+  transition:
+    border-color var(--motion-fast),
+    background-color var(--motion-fast),
+    box-shadow var(--motion-fast);
+}
+
+.gate-form .line-field:focus-within {
+  border-bottom-color: var(--ink);
+  background-color: var(--wash);
+  box-shadow: inset 0 -1px 0 var(--ink);
+}
+
+.gate-form .line-field:focus-within > span {
+  color: var(--ink);
+}
+
+.gate-form .line-field input:focus-visible {
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+}
+
+.gate-form input:-webkit-autofill,
+.gate-form input:-webkit-autofill:hover,
+.gate-form input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--ink);
+  caret-color: var(--ink);
+  box-shadow: 0 0 0 1000px var(--paper) inset !important;
+  transition: background-color 9999s ease-out;
 }
 
 .gate-message {
