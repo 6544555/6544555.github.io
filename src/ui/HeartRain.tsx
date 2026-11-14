@@ -4,6 +4,7 @@ import {
   useState,
   type CSSProperties,
 } from 'react'
+import { createPortal } from 'react-dom'
 import { COPY } from '../copy'
 
 const HEART_COUNT = 34
@@ -74,28 +75,31 @@ export function HeartRain() {
       <span className="visually-hidden" role="status" aria-live="polite">
         {burst ? COPY.heartRainStatus : ''}
       </span>
-      {burst ? (
-        <div key={burst.id} className="heart-rain-layer" aria-hidden="true">
-          {burst.drops.map((drop) => (
-            <span
-              key={drop.id}
-              className="heart-rain-drop"
-              style={
-                {
-                  '--heart-left': drop.left,
-                  '--heart-delay': drop.delay,
-                  '--heart-duration': drop.duration,
-                  '--heart-drift': drop.drift,
-                  '--heart-size': drop.size,
-                  '--heart-turn': drop.turn,
-                } as CSSProperties
-              }
-            >
-              ♥
-            </span>
-          ))}
-        </div>
-      ) : null}
+      {burst
+        ? createPortal(
+            <div key={burst.id} className="heart-rain-layer" aria-hidden="true">
+              {burst.drops.map((drop) => (
+                <span
+                  key={drop.id}
+                  className="heart-rain-drop"
+                  style={
+                    {
+                      '--heart-left': drop.left,
+                      '--heart-delay': drop.delay,
+                      '--heart-duration': drop.duration,
+                      '--heart-drift': drop.drift,
+                      '--heart-size': drop.size,
+                      '--heart-turn': drop.turn,
+                    } as CSSProperties
+                  }
+                >
+                  ♥
+                </span>
+              ))}
+            </div>,
+            document.body,
+          )
+        : null}
     </>
   )
 }

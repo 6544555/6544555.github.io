@@ -4470,10 +4470,17 @@ p {
 
   .heart-rain-trigger {
     min-width: 132px;
+    order: 1;
+  }
+
+  .music-control {
+    flex-basis: 100%;
+    order: 3;
   }
 
   .lock-button {
     margin-left: auto;
+    order: 2;
   }
 
   .site-nav {
@@ -4640,11 +4647,11 @@ p {
   }
 
   .music-control {
-    flex: 1 1 100%;
+    flex: 0 0 100%;
   }
 
   .heart-rain-trigger {
-    flex: 1 1 auto;
+    flex: 0 1 auto;
   }
 
   .section-header {
