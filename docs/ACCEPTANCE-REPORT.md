@@ -36,7 +36,7 @@
 | A26 [P0] | 通过 | 源码、环境示例与 `dist` | 扫描真实管理密钥与 JWT | 未发现管理密钥赋值或真实密钥；安全警示文字不参与判定 |
 | A27 [P0] | 通过 | 本地 Git 仓库 `main` | 初始化、创建根提交、检查 `.env` 历史/索引和工作区 | `.env` 历史 0 条；`git ls-files --error-unmatch .env` 退出 1；工作区干净；`docs/evidence/A27-git-isolation.txt` |
 | A28 | 未验证 | 登录后 production | ZIP 在新会话恢复 | 鉴权改造后尚未重跑恢复闭环 |
-| A29 | 通过 | production 375 / 768 / 1440 | 渲染 7 张以上照片并检查主照片和轨道 | 每 7 张一张跨两列 3:2 主照片；375/768/1440 保持 2/3/4 轨道，无横向溢出；`docs/UI-POLISH-REPORT.md` |
+| A29 | 通过 | production 375 / 768 / 1440 | 渲染 7 张以上照片并检查主图和列桶 | 每 7 张首张独立整行并保持 3:2；其余照片按高度权重进入 2/3/4 个均衡列桶，混合 4:5、1:1、3:4 与错位节奏，无横向溢出；`docs/UI-POLISH-REPORT.md` |
 | A30 | 通过 | production 375 / 768 / 1440 | 检查气球、爱心、间距和点击层 | 两枚黑白线稿气球和两枚陈玫色爱心独立成带，与标题间距 20–34px，`aria-hidden` 且不拦截操作 |
 | A31 | 通过 | Edge production 375×812 + 私有 `music` Storage | 播放默认音轨；从“换音乐”上传 WAV；刷新；恢复默认 | 上传后的 `audio.src` 为 Supabase 私有签名地址；刷新后仍读到自选音轨；“恢复默认”后重新使用 `/audio/memory-theme.wav`；迁移连续执行两次成功 |
 | A32 | 通过 | production 375 / 768 / 1440 | 核对暖米纸编辑部主题、字体、发丝线、留白、直角和响应式 | 页面底色 `#F9F8F6`、标题为衬线、正文为无衬线；375/768/1440 为 2/3/4 轨、无横向溢出；普通卡片无阴影且圆角为 0；音乐按钮 46px 高 |
@@ -44,7 +44,7 @@
 | A34 | 通过 | production 375 / 768 / 1440 | 切换爱心彩蛋开关，检查粒子、类型、挂载点、点击穿透和减少动态 | 开启后生成 70 枚彩蛋：50 枚五色小爱心、10 枚玫瑰、10 枚花苞；开关具有 `role="switch"` 与 `aria-checked`；层固定挂载到 `BODY`，`pointer-events: none` 且 `aria-hidden`；关闭后粒子归零；减少动态时静态排列 |
 | A35 | 通过 | production 375 / 768 / 1440 | 滚动至留言区与页脚之间，检查心电波形、动画和减少动态 | 分隔带宽 320/657/1200px，均无横向溢出并与页脚保持 32px 间距；脉段颜色 `rgb(28,28,28)`，动画 `heartbeat-scan` 5.6s；减少动态时动画 `none`、显示完整静态波形；`docs/evidence/heartbeat-trace-1440.png` |
 | A36 | 通过 | Edge production 375×812 / 真实共享账号 | 新增临时留言 → 点击“移走这条” → 二次确认 → 刷新 | 仅云端留言显示删除入口；确认弹层标题为“要把这条留言移走吗”；`messages.delete` 成功后条数恢复为 `0`，刷新后不再出现；按钮 49×44px，页面无横向溢出；`docs/evidence/A36-message-delete.txt` |
-| A37 | 通过 | production preview 375×812 / 768×1024 / 1440×900 | 一次上传 5 张临时照片，检查相框、画幅、相片库、查看与删除 | 命中 5 种相框和 3:2、4:5、1:1、3:4、错位 4:5 五种节奏；相片库显示 5 张并可进入大图；逐张删除后刷新为 0，无横向溢出；`docs/evidence/photo-frames-1440.png`、`photo-library-1440.png` |
+| A37 | 通过 | production preview 375×812 / 768×1024 / 1440×900 / 真实上传 | 一次上传 5 张临时照片，检查相框、列桶、相片库、查看与删除 | 命中 5 种相框和 3:2、4:5、1:1、3:4、错位 4:5；375/768/1440 普通照片列宽 320/657/1200 并分别使用 2/3/4 列；相片库显示 5 张并可进入大图；逐张删除后刷新为 0，无横向溢出；`docs/evidence/photo-frames-1440.png`、`photo-library-1440.png` |
 
 ## 真实 Supabase 配置
 
@@ -60,7 +60,7 @@
 ## 最新门禁
 
 ```text
-npm test          12 files / 55 tests passed
+npm test          12 files / 58 tests passed
 npm run typecheck exit 0
 npm run build     exit 0, 106 modules
 ```

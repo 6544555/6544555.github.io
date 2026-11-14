@@ -54,6 +54,37 @@ export function photoCardClass(index: number, isRecent = false): string {
   return `photo-card ${frame} ${composition}${isRecent ? ' is-new' : ''}`.trim()
 }
 
+export function photoLayoutGroups(count: number): number[][] {
+  const groups: number[][] = []
+
+  for (let index = 0; index < count; index += 1) {
+    if (index % 7 === 0) groups.push([index])
+    else groups[groups.length - 1].push(index)
+  }
+
+  return groups
+}
+
+export function photoColumnCount(viewportWidth: number): number {
+  if (viewportWidth >= 1200) return 4
+  if (viewportWidth >= 768) return 3
+  return 2
+}
+
+export function photoColumnBuckets(indexes: number[], count: number): number[][] {
+  const buckets = Array.from({ length: count }, () => [] as number[])
+  const heights = Array.from({ length: count }, () => 0)
+
+  for (const index of indexes) {
+    const target = heights.indexOf(Math.min(...heights))
+    buckets[target].push(index)
+    heights[target] +=
+      index % 5 === 2 ? 1 : index % 5 === 3 ? 4 / 3 : 5 / 4
+  }
+
+  return buckets
+}
+
 interface PhotoWallProps {
   photos: PhotoItem[]
   cloudState: CloudState
@@ -111,6 +142,23 @@ export function PhotoWall({
   const [selected, setSelected] = useState<PhotoItem | null>(null)
   const [libraryOpen, setLibraryOpen] = useState(false)
   const [recentIds, setRecentIds] = useState<Set<string>>(new Set())
+  const [columnCount, setColumnCount] = useState(() =>
+    photoColumnCount(typeof window === 'undefined' ? 375 : window.innerWidth),
+  )
+
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 1200px)')
+    const tablet = window.matchMedia('(min-width: 768px)')
+    const sync = () => setColumnCount(photoColumnCount(window.innerWidth))
+
+    sync()
+    desktop.addEventListener('change', sync)
+    tablet.addEventListener('change', sync)
+    return () => {
+      desktop.removeEventListener('change', sync)
+      tablet.removeEventListener('change', sync)
+    }
+  }, [])
 
   const closeViewer = useCallback(() => setSelected(null), [])
   const writable =
@@ -221,6 +269,36 @@ export function PhotoWall({
     void processFiles([task.file])
   }
 
+  const renderPhotoCard = (photo: PhotoItem, index: number) => (
+    <article key={photo.id} className={photoCardClass(index, recentIds.has(photo.id))}>
+      <button
+        type="button"
+        className="photo-open"
+        aria-label={`${photo.note || photo.filename}，${formatDate(photo.takenAt)}`}
+        onClick={() => setSelected(photo)}
+      >
+        <span className="photo-frame">
+          <PhotoImage
+            photo={photo}
+            store={store}
+            cloudState={cloudState}
+            className="photo-image"
+            eager={index < 4}
+          />
+        </span>
+        <span className="photo-caption">
+          <time dateTime={photo.takenAt}>{formatDate(photo.takenAt)}</time>
+          {photo.note ? <span>{photo.note}</span> : null}
+        </span>
+      </button>
+      {recentIds.has(photo.id) ? (
+        <span className="photo-fresh-label" aria-hidden="true">
+          新入册
+        </span>
+      ) : null}
+    </article>
+  )
+
   return (
     <section id="photos" className="section photo-section" aria-labelledby="photos-title">
       <header className="section-header">
@@ -297,39 +375,26 @@ export function PhotoWall({
             </button>
           </div>
         ) : (
-          <div className="photo-grid">
-            {photos.map((photo, index) => (
-              <article
-                key={photo.id}
-                className={photoCardClass(index, recentIds.has(photo.id))}
-              >
-                <button
-                  type="button"
-                  className="photo-open"
-                  aria-label={`${photo.note || photo.filename}，${formatDate(photo.takenAt)}`}
-                  onClick={() => setSelected(photo)}
-                >
-                  <span className="photo-frame">
-                    <PhotoImage
-                      photo={photo}
-                      store={store}
-                      cloudState={cloudState}
-                      className="photo-image"
-                      eager={index < 4}
-                    />
-                  </span>
-                  <span className="photo-caption">
-                    <time dateTime={photo.takenAt}>{formatDate(photo.takenAt)}</time>
-                    {photo.note ? <span>{photo.note}</span> : null}
-                  </span>
-                </button>
-                {recentIds.has(photo.id) ? (
-                  <span className="photo-fresh-label" aria-hidden="true">
-                    新入册
-                  </span>
-                ) : null}
-              </article>
-            ))}
+          <div className="photo-album">
+            {photoLayoutGroups(photos.length).map((group) => {
+              const [featureIndex, ...columnIndexes] = group
+              const visibleColumns = Math.min(columnCount, columnIndexes.length)
+              const columns = photoColumnBuckets(columnIndexes, visibleColumns)
+              return (
+                <div className="photo-album-group" key={photos[featureIndex].id}>
+                  {renderPhotoCard(photos[featureIndex], featureIndex)}
+                  {visibleColumns > 0 ? (
+                    <div className="photo-columns" data-columns={visibleColumns}>
+                      {columns.map((indexes, columnIndex) => (
+                        <div className="photo-column" key={columnIndex}>
+                          {indexes.map((index) => renderPhotoCard(photos[index], index))}
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              )
+            })}
           </div>
         )}
       </div>
