@@ -1,0 +1,15 @@
+A1 anonymous isolation verification
+Date: 2026-11-14 (Asia/Shanghai)
+Origin: http://127.0.0.1:4188/birthday-memory/ (previously unused port/origin)
+Browser: Tabbit Browser / Microsoft Edge
+
+Observed
+- Login gate: 1
+- Private site shell: 0
+- Registration text: false
+- Site-private/API requests: 0
+- Service Worker registrations: 0
+- Cache names: []
+- localStorage keys: []
+- The only `<img>` reported was `chrome-extension://jigjjhbimkkakoncmabgiefpjebkaoek/img/ai_assistant.png`, injected by the browser extension; the site itself loaded no photo.
+- Page source served only the public login shell; no `/memories/` request occurred.

@@ -1,0 +1,81 @@
+name: Supabase keepalive
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 */3 * *'
+
+permissions:
+  contents: read
+
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check required secrets
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_SHARED_EMAIL: ${{ secrets.SUPABASE_SHARED_EMAIL }}
+          SUPABASE_SHARED_PASSWORD: ${{ secrets.SUPABASE_SHARED_PASSWORD }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ] || \
+             [ -z "$SUPABASE_SHARED_EMAIL" ] || [ -z "$SUPABASE_SHARED_PASSWORD" ]; then
+            echo "Required repository secrets are missing."
+            exit 1
+          fi
+
+      - name: Sign in with the shared account
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_SHARED_EMAIL: ${{ secrets.SUPABASE_SHARED_EMAIL }}
+          SUPABASE_SHARED_PASSWORD: ${{ secrets.SUPABASE_SHARED_PASSWORD }}
+        run: |
+          base="${SUPABASE_URL%/}"
+          payload="$(jq -n \
+            --arg email "$SUPABASE_SHARED_EMAIL" \
+            --arg password "$SUPABASE_SHARED_PASSWORD" \
+            '{email: $email, password: $password}')"
+          status="$(curl \
+            --silent \
+            --show-error \
+            --retry 2 \
+            --retry-delay 2 \
+            --max-time 30 \
+            --output /tmp/keepalive-auth.json \
+            --write-out '%{http_code}' \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Content-Type: application/json" \
+            --data "$payload" \
+            "${base}/auth/v1/token?grant_type=password")"
+          echo "Auth sign-in HTTP status: ${status}"
+          if [ "${status}" -lt 200 ] || [ "${status}" -ge 300 ]; then
+            exit 1
+          fi
+          token="$(jq -er '.access_token' /tmp/keepalive-auth.json)"
+          echo "::add-mask::${token}"
+          printf 'SUPABASE_ACCESS_TOKEN=%s\n' "$token" >> "$GITHUB_ENV"
+
+      - name: Read one photo row through the REST API
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          base="${SUPABASE_URL%/}"
+          status="$(curl \
+            --silent \
+            --show-error \
+            --retry 2 \
+            --retry-delay 2 \
+            --max-time 30 \
+            --output /tmp/keepalive-response.json \
+            --write-out '%{http_code}' \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ACCESS_TOKEN}" \
+            "${base}/rest/v1/photos?select=id&limit=1")"
+          echo "REST read HTTP status: ${status}"
+          if [ "${status}" -lt 200 ] || [ "${status}" -ge 300 ]; then
+            exit 1
+          fi

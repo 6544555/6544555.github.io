@@ -1,0 +1,14 @@
+A1 Gate 隔离修复验证
+日期：2026-11-14
+浏览器：Microsoft Edge 157.0.4341.46 headless
+Profile：全新独立 user-data-dir
+页面：http://127.0.0.1:4174/birthday-memory/
+
+Page 状态：一封纪念信
+Service Worker registrations：0
+content.json 请求：0
+/memories/ 照片请求：0
+/rest/v1/ 请求：0
+
+Network 匹配总数：0
+结论：R-01 已修复；Service Worker 只在解锁后的 MemorySite 挂载时注册，Gate 阶段不请求或预缓存纪念内容。

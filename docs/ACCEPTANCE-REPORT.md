@@ -1,0 +1,66 @@
+# 验收报告 A1–A28
+
+日期：2026-11-14  
+环境：Windows；Node `v26.13.0`；Vite `7.3.8`；Microsoft Edge `157.0.4341.46`；Playwright `1.62.1`；production preview `http://127.0.0.1:4174/birthday-memory/`。  
+权限模型：Supabase Auth 关闭公开注册，只保留一个共享邮箱密码账号；匿名只看到公开登录入口。
+
+结论：**本地交付完成；远程发布 BLOCKED**。单账号 Auth、匿名 RLS/Storage 拒绝、唯一账号跨浏览器读写、登录后离线、非均匀照片编排、庆祝点缀、自定义背景音乐、响应式和本地门禁已通过，A27 已闭环。A24 保活与 GitHub Pages 真实发布因未授权远程发布而保持未执行。
+
+| 编号 | 结果 | 环境 | 操作 | 证据 |
+|---|---|---|---|---|
+| A1 [P0] | 通过 | Edge 157 headless / 全新 origin | 打开 4188 端口全新 origin，检查 DOM、请求、SW 与缓存 | 登录壳层 `1`、私密壳层 `0`、注册文字 `false`、私密/API 请求 `0`、SW `0`、缓存 `0`；`docs/evidence/A1-auth-fresh-origin.txt` |
+| A2 [P0] | 通过 | Edge 157 headless / production | Auth 预热完成后，从一次点击登录到 `#photos-title` 可见计时 3 次 | `1383ms / 851ms / 855ms`，均低于 2 秒；瞬时重试包含在同一次点击内，预热有硬超时；`docs/evidence/A2-A4-auth-timing.txt` |
+| A3 | 通过 | Edge 157 headless / 真实 Supabase | 输入错误密码 | HTTP `400`，无 access/refresh token；私密页面 `false`，显示统一重试文案 |
+| A4 [P0] | 通过 | Edge 157 headless / production | 过期会话的 refresh 延迟 `8000ms` | 公开认证壳层 `79ms` 可见；认证前私密 REST/Storage 请求 `0`；`docs/evidence/A2-A4-auth-timing.txt` |
+| A5 | 通过 | production 375 / 768 / 1440 | 检查照片列数和横向宽度 | 列数 `2 / 3 / 4`；三档均无横向溢出 |
+| A6 | 未验证 | 真实 Supabase | 三图批次与单张失败不回滚 | 阶段 7 只完成单张真实上传；三图失败回滚路径未执行 |
+| A7 [P0] | 通过 | 两个独立 Edge 157 profile/进程 | A 上传照片、留言和时光；B 使用同一共享账号读取 | B 读取照片 `1`、留言和时光；B 删除后 A 刷新照片消失；`docs/STAGE7-EXECUTION.md` |
+| A8 | 通过 | 两个独立 Edge profile | B 打开照片、二次确认删除、A 刷新 | 删除同步通过，其他对象保留 |
+| A9 | 未验证 | 真实 Supabase | 时光完整新增、编辑、删除 | 真实新增和读回已通过；编辑持久化未形成闭环 |
+| A10 | 未验证 | 真实 Supabase | 留言中提交脚本与换行 | 鉴权改造后尚未重跑 XSS 纯文本证据 |
+| A11 | 通过 | Vitest | `daysTogether` | 覆盖第 0 天、跨月、跨年 |
+| A12 | 未验证 | 真实空数据集 | 三处空状态 | 三块空状态存在；完整数据切换证据未归档 |
+| A13 | 未验证 | 登录后 production | ZIP 导出 | 鉴权改造后尚未重跑导出闭环 |
+| A14 | 通过 | production | 字体请求 | 系统中文字体回退，无第三方字体请求 |
+| A15 | 通过 | `prefers-reduced-motion: reduce` | 读取 computed transform | 动效缩减规则生效，照片无位移 |
+| A16 | 未验证 | production | 完整纯键盘旅程 | 登录、上传、大图和表单完整旅程未一次跑通 |
+| A17 | 通过 | production 375 / 768 / 1440 | 扫描可见按钮和链接 | 小于 `44×44px` 控件均为 `0` |
+| A18 | 通过 | DESIGN v4 + CSS | 核对黑白灰主体与粉色爱心 token | 使用登记的黑白灰 6 个主体 token 与 `heart #D78A9F` 专用装饰 token；粉色未进入正文、按钮或状态 |
+| A19 | 未验证 | production | 完整对比度与 alt 扫描 | 改版后的全量可读性扫描尚未归档 |
+| A20 | 通过 | 源码 + production | 检查索引和 robots | `noindex, nofollow` 与 `robots.txt: Disallow: /` 存在 |
+| A21 [P0] | 通过 | 登录后 Edge，真实离线 | 登录后切离线并刷新 | 主站、本地文本快照和离线文案可见，无白屏 |
+| A22 | 通过 | 旧暂停回归 | 模拟项目暂停特征 | 显示“这里在休息，晚点再来”，无重试按钮 |
+| A23 [P0] | 通过 | 两个独立 Edge profile | 退出登录并检查本地状态 | 主站 `0`、snapshot `null`、认证缓存 `null`、Auth token `0`；自动会话失效清理由单测覆盖 |
+| A24 | 未验证 | 未推送 GitHub、无 Secrets | 运行 keepalive | 工作流已改为共享账号登录、mask token 后读取 photos；尚无真实 Actions 日志 |
+| A25 | 通过 | 旧文件边界回归 | 选择 8.1MB 与 10MB 文件 | 均在本地拒绝，无上传请求 |
+| A26 [P0] | 通过 | 源码、环境示例与 `dist` | 扫描真实管理密钥与 JWT | 未发现管理密钥赋值或真实密钥；安全警示文字不参与判定 |
+| A27 [P0] | 通过 | 本地 Git 仓库 `main` | 初始化、创建根提交、检查 `.env` 历史/索引和工作区 | `.env` 历史 0 条；`git ls-files --error-unmatch .env` 退出 1；工作区干净；`docs/evidence/A27-git-isolation.txt` |
+| A28 | 未验证 | 登录后 production | ZIP 在新会话恢复 | 鉴权改造后尚未重跑恢复闭环 |
+| A29 | 通过 | production 375 / 768 / 1440 | 渲染 7 张以上照片并检查主照片和轨道 | 每 7 张一张跨两列 3:2 主照片；375/768/1440 保持 2/3/4 轨道，无横向溢出；`docs/UI-POLISH-REPORT.md` |
+| A30 | 通过 | production 375 / 768 / 1440 | 检查气球、爱心、间距和点击层 | 两枚黑白线稿气球和两枚粉色爱心独立成带，与标题间距 20–34px，`aria-hidden` 且不拦截操作 |
+| A31 | 通过 | Edge production + OGG 文件 | 点击播放/暂停并检查布局和 MIME | 按钮 92×44px，实际进入播放态；音频 58,006 bytes、33.3 秒 OGG；三档无导航挤压 |
+
+## 真实 Supabase 配置
+
+- Allow new users to sign up：关闭，保存并刷新后仍关闭。
+- Auth Users：仅一个共享 Email 账号。
+- `0002` 已加历史保护：检测到 `0003` 的 authenticated 策略后跳过，不会重新开放匿名访问。
+- `0003_authenticated_access.sql`：连续两次执行成功。
+- 最终策略：三表 `authenticated / ALL`；Storage 为 `authenticated` 的 SELECT/INSERT/UPDATE/DELETE。
+- 匿名 REST：`401`；匿名 Storage 对现有对象列表 `0` 行，上传、签名和下载均 `400`。
+- 唯一账号：登录/refresh `200`；三表与 Storage CRUD 成功，测试数据 remaining `0`。
+
+## 最新门禁
+
+```text
+npm test          10 files / 46 tests passed
+npm run typecheck exit 0
+npm run build     exit 0, 101 modules
+```
+
+## 远程发布阻塞
+
+1. **A24**：需要 GitHub 远程仓库、四个 Secrets 和真实 Actions 运行日志。
+2. **GitHub Pages**：需要用户另行授权创建/推送远程仓库后执行真实发布。
+
+本地仓库已初始化并完成根提交，没有 remote，也没有 push。远程发布未授权，因此 A24 与真实 Pages URL 保持未验证。

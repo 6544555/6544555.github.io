@@ -1,0 +1,17 @@
+A27 environment file isolation verification
+Date: 2026-11-14 (Asia/Shanghai)
+Repository: local only, no remote, no push
+Branch: main
+Initial commit: local `main` root commit (hash recorded by `git log`)
+Tracked files: 90
+Worktree clean: true
+
+Checks
+- `.gitignore` rule: `.gitignore:10:.env`
+- `git check-ignore -v .env`: matched `.env`
+- `git log --all -- .env`: 0 lines
+- `git ls-files --error-unmatch .env`: exit 1 (not tracked)
+- Staged `.env`: none
+- Staged `node_modules`: none
+- Staged `dist`: none
+- `.env.example`: staged with empty values

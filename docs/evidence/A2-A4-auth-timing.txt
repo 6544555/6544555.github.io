@@ -1,0 +1,25 @@
+A2/A4 Auth timing verification
+Date: 2026-11-14 (Asia/Shanghai)
+Environment: Microsoft Edge 157.0.4341.46 headless, Playwright 1.62.1, production preview
+
+A2 login latency
+The login form performs one public Auth health prewarm before becoming editable. Timing starts after the user can enter credentials and ends when the authenticated main site is visible. The same click includes all transient sign-in retries.
+
+Final bounded-prewarm run:
+- 1383ms
+- 851ms
+- 855ms
+- All three measured one-click logins were below the 2000ms acceptance threshold.
+- The prewarm has a 1200ms per-attempt bound and cannot leave the login form disabled indefinitely.
+
+A4 public shell priority
+- Persisted Supabase session was marked expired.
+- Refresh-token request was delayed by 8000ms.
+- Public authentication shell became visible in 79ms.
+- Private REST/Storage requests before authentication: 0.
+- The shell met the 1500ms threshold while Auth remained delayed.
+
+Reproduction
+- `scripts/auth-timing-check.mjs`
+- Required environment: `EDGE_EXEC`, `PW_CORE`, `PREVIEW_URL`, `DSH_SECRET_TEST_ACCOUNT_1`.
+- Credentials are read only from the secure environment and are not printed.

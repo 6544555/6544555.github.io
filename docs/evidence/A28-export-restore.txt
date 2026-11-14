@@ -1,0 +1,25 @@
+A28 导出恢复验证记录
+日期：2026-11-14
+导出页面：http://127.0.0.1:4174/birthday-memory/
+导出文件：docs/evidence/a28-export.zip（54,302 字节）
+
+ZIP 内容：
+- content.json
+- README.txt
+- photos/2024-07-12_01.png
+- photos/2024-08-20_01.png
+- photos/2024-12-31_01.png
+
+内容解析（UTF-8）：
+- site.herName = 小满
+- photos = 3
+- timeline = 3
+- messages = 2
+
+恢复验证：
+- 将 content.json 与 photos 替换进全新 dist，并运行在独立 origin http://127.0.0.3:4176/birthday-memory/
+- 验证结果：photoCards=3，timelineEntries=3，messageLines=2
+- 图片实际加载：3/3，naturalWidth 均为 1000
+- 页面中文标题、开场句、照片说明、时光和留言均完整，无乱码
+
+结论：A28 导出 ZIP 在新 origin 替换恢复后，文字与照片数量一致，图片可用。收据：[a28-export.zip](a28-export.zip)

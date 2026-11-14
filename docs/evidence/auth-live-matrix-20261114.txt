@@ -1,0 +1,56 @@
+Auth and RLS live verification
+Date: 2026-11-14 (Asia/Shanghai)
+Project ref: hrldvxiqzewotznghmai
+Browser: Tabbit Browser / Microsoft Edge, Supabase dashboard session
+
+Auth configuration
+- Allow new users to sign up: checked -> unchecked -> saved -> reload still unchecked.
+- Auth Users after setup: exactly one Email user visible.
+- Auto-confirm user: enabled when the shared user was created.
+- The shared email and password are intentionally omitted from this evidence file.
+
+Migration 0003
+- First execution: Success. No rows returned.
+- Second execution: Success. No rows returned.
+- The first pre-fix attempt reported `42P01 relation public.allowed_users does not exist`; the migration was changed to avoid dropping a policy on an absent table, then both final executions succeeded.
+
+Permission matrix
+- Anonymous REST read (`GET /rest/v1/photos`): HTTP 401.
+- Anonymous Storage list (`POST /storage/v1/object/list/memories`): HTTP 200 with 0 rows, confirming RLS exposes no object metadata.
+- Anonymous Storage upload: HTTP 400.
+- Anonymous signed URL request: HTTP 400.
+- Shared-account password login: HTTP 200 with session.
+- Wrong password: HTTP 400 without access/refresh token.
+- Refresh token flow: HTTP 200 with rotated session.
+- Authenticated REST read: HTTP 200.
+- Authenticated Storage list: HTTP 200.
+- Authenticated message insert/read/delete: 201 / 200 / 204.
+- Authenticated memory insert/delete: 201 / 204.
+- Authenticated private Storage upload and signed URL: 200 / 200.
+- Authenticated photo metadata insert/delete: 201 / 204.
+- Authenticated Storage delete: HTTP 200.
+- Test rows after cleanup: 0.
+- Test Storage objects under `permission-matrix/`: 0 remaining.
+
+Production preview UI
+- Anonymous: login gate=1, private shell=0, registration text=0, Supabase requests=0.
+- Login with the shared account: login gate=0, private shell=1, photo section=1.
+- Reload: session restored with private shell=1 and login gate=0.
+- Logout: private shell=0, snapshot=null, authenticated-user cache=null, Supabase auth token keys=0.
+- Existing registered Service Worker remains available for the public shell; private content is not requested while signed out.
+- 375x812 anonymous: viewport/client/scroll width matched at 375px, private shell=0, registration text=false.
+- 375x812 authenticated: client/scroll width matched at 360px after scrollbar reservation, private shell=1.
+- Screenshots: `docs/evidence/auth-gate-375.png`, `docs/evidence/auth-main-375.png`.
+- Authenticated offline reload: private shell=1, `navigator.onLine=false`, offline copy visible, cached snapshot available, no white screen.
+
+Live policy audit
+- public.memories: memories_authenticated_access, roles={authenticated}, cmd=ALL.
+- public.messages: messages_authenticated_access, roles={authenticated}, cmd=ALL.
+- public.photos: photos_authenticated_access, roles={authenticated}, cmd=ALL.
+- storage.objects: memories_authenticated_select / insert / update / delete, roles={authenticated}.
+- public.allowed_users: NULL (the superseded table does not exist).
+
+Result
+- Anonymous users are denied table data and private-object writes/signing; Storage list exposes an empty result rather than metadata.
+- The single shared account can perform the required table and private Storage CRUD flow.
+- Public signup is disabled and one shared Auth user remains.

@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/content.schema.json",
+  "title": "Public Memory Shell",
+  "description": "Only public shell content may ship statically. Protected photos, timeline entries, and messages must be stored in Supabase and fetched after authentication.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "site",
+    "photos",
+    "timeline",
+    "messages"
+  ],
+  "properties": {
+    "site": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "herName",
+        "startDate",
+        "openingLine",
+        "passHint"
+      ],
+      "properties": {
+        "herName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "startDate": {
+          "type": "string",
+          "pattern": "^$|^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "openingLine": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "passHint": {
+          "type": "string",
+          "maxLength": 0,
+          "description": "Deprecated compatibility field. Static builds must not contain password hints."
+        }
+      }
+    },
+    "photos": {
+      "type": "array",
+      "maxItems": 0,
+      "description": "Protected photos must not ship in the static build."
+    },
+    "timeline": {
+      "type": "array",
+      "maxItems": 0,
+      "description": "Protected timeline entries must not ship in the static build."
+    },
+    "messages": {
+      "type": "array",
+      "maxItems": 0,
+      "description": "Protected messages must not ship in the static build."
+    }
+  },
+  "examples": [
+    {
+      "site": {
+        "herName": "纪念册",
+        "startDate": "",
+        "openingLine": "把日子放在这里",
+        "passHint": ""
+      },
+      "photos": [],
+      "timeline": [],
+      "messages": []
+    }
+  ]
+}
