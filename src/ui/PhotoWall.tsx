@@ -1,5 +1,6 @@
 import {
   useCallback,
+  useEffect,
   useRef,
   useState,
   type ChangeEvent,
@@ -51,6 +52,22 @@ function filenameDate(file: File): string {
   return localDateValue(new Date(file.lastModified || Date.now()))
 }
 
+function UploadPreview({ file }: { file: File }) {
+  const [src, setSrc] = useState('')
+
+  useEffect(() => {
+    const url = URL.createObjectURL(file)
+    setSrc(url)
+    return () => URL.revokeObjectURL(url)
+  }, [file])
+
+  return (
+    <span className="upload-preview" aria-hidden="true">
+      {src ? <img src={src} alt="" /> : null}
+    </span>
+  )
+}
+
 export function PhotoWall({
   photos,
   cloudState,
@@ -92,7 +109,7 @@ export function PhotoWall({
         next.delete(id)
         return next
       })
-    }, 520)
+    }, 2_600)
   }
 
   const processFiles = async (files: File[]) => {
@@ -275,6 +292,11 @@ export function PhotoWall({
                     {photo.note ? <span>{photo.note}</span> : null}
                   </span>
                 </button>
+                {recentIds.has(photo.id) ? (
+                  <span className="photo-fresh-label" aria-hidden="true">
+                    新入册
+                  </span>
+                ) : null}
               </article>
             ))}
           </div>
@@ -284,9 +306,12 @@ export function PhotoWall({
       {tasks.length > 0 ? (
         <div className="upload-queue" aria-live="polite">
           {tasks.map((task) => (
-            <div className="upload-row" key={task.id}>
-              <span className="upload-name">{task.file.name}</span>
-              <span className="upload-detail">{task.detail}</span>
+            <div className={`upload-row is-${task.status}`} key={task.id}>
+              <UploadPreview file={task.file} />
+              <span className="upload-content">
+                <span className="upload-name">{task.file.name}</span>
+                <span className="upload-detail">{task.detail}</span>
+              </span>
               {task.status === 'rejected' ? (
                 <button
                   type="button"
