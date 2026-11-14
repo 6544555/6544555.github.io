@@ -28,6 +28,7 @@
 1. `supabase/migrations/0001_init.sql`
 2. `supabase/migrations/0002_storage_policy.sql`
 3. `supabase/migrations/0003_authenticated_access.sql`
+4. `supabase/migrations/0004_music_bucket.sql`
 
 迁移完成后核验：
 
@@ -53,12 +54,14 @@
 
 ## 5. 背景音乐
 
-默认使用原创合成氛围音轨 `public/audio/memory-theme.ogg`，登录后点页头按钮播放。替换步骤：
+默认使用原创合成氛围音轨 `public/audio/memory-theme.ogg`。登录后：
 
-1. 将获得授权的 OGG/MP3 文件放入 `public/audio/`。
-2. 修改 `src/ui/BackgroundMusic.tsx` 的 `DEFAULT_MUSIC_FILE`，或设置 `VITE_BACKGROUND_MUSIC_URL`。
-3. 建议 30–90 秒、可无缝循环、低响度；不要使用未经授权的商业歌曲。
-4. 首次播放必须由用户点击触发，不能绕过浏览器自动播放限制。
+1. 点页头“换音乐”。
+2. 选择不超过 16MB 的 MP3、OGG、WAV 或 M4A。
+3. 音轨保存到私有 `music` 桶，刷新和另一设备登录后继续使用。
+4. 点“恢复默认”会删除自选音轨并回到打包音轨。
+
+如需修改打包默认音轨，可替换 `public/audio/memory-theme.ogg`，或设置 `VITE_BACKGROUND_MUSIC_URL`。使用有权公开播放的音频；首次播放必须由用户点击触发。
 
 ## 6. 字体
 

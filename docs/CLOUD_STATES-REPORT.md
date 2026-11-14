@@ -56,9 +56,9 @@
 ## 6. 门禁
 
 ```text
-npm test          10 files / 46 tests passed
+npm test          10 files / 49 tests passed
 npm run typecheck exit 0
-npm run build     exit 0, 101 modules
+npm run build     exit 0, 103 modules
 ```
 
 ## 7. 残余风险

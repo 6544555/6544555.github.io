@@ -242,6 +242,32 @@
 建议 UI：应用根组件用它决定显示登录页还是主站。  
 示例：`const unsubscribe = subscribeToAuth(setAuthState)`
 
+## src/lib/music.ts
+
+### `musicFileInfo(filename, mimeType): MusicFileInfo | null`
+说明：校验扩展名与 MIME，返回标准扩展名和上传 MIME。
+参数：文件名与浏览器 `File.type`；支持 MP3、OGG、WAV、M4A。
+返回：`{ extension, mimeType }` 或 `null`。
+建议 UI：不支持的格式只在音乐设置层提示。
+示例：`musicFileInfo('theme.ogg', 'audio/ogg')`
+
+### `loadCustomMusic(): Promise<StoredMusicTrack | null>`
+说明：列为当前 authenticated 用户可访问的私有 `music/theme` 对象，选择最新受支持音轨并签发 24 小时 URL。
+参数：无。
+返回：自选音轨或 `null`；无音轨时 UI 使用打包默认音轨。
+建议 UI：加载失败时静默回退默认音轨，不阻塞主站。
+
+### `uploadCustomMusic(file): Promise<StoredMusicTrack>`
+说明：验证 16MB 上限和格式，上传到 `music/theme/background.<ext>`，清理其他自选音轨并返回签名 URL。
+参数：浏览器 `File`。
+可能抛：`InputError` 或 `CloudError`。
+建议 UI：上传期间禁用重复选择；成功后切换到新音轨并清理输入值。
+
+### `resetCustomMusic(): Promise<void>`
+说明：删除 `music/theme` 下的全部自选音轨。
+参数：无。
+建议 UI：成功后切回 `public/audio/memory-theme.ogg`。
+
 ## src/ui/BackgroundMusic.tsx
 
 ### `resolveMusicUrl(baseUrl, configuredUrl?): string`
@@ -252,10 +278,10 @@
 示例：`resolveMusicUrl('/birthday-memory/', 'audio/custom.ogg')`
 
 ### `BackgroundMusic()`
-说明：提供循环背景音乐的播放/暂停、偏好恢复、错误降级和卸载暂停。  
-参数：无。  
-可能抛：组件内捕获播放和存储失败，不向主站抛出。  
-建议 UI：首次播放必须由用户点击；`aria-pressed` 表示状态，按钮保持至少 44px。  
+说明：提供循环背景音乐的播放/暂停、自选上传、恢复默认、偏好恢复、错误降级和卸载暂停。
+参数：无。
+可能抛：组件内捕获播放、上传和存储失败，不向主站抛出。
+建议 UI：首次播放必须由用户点击；`aria-pressed` 表示状态，播放和设置按钮均保持至少 44px。
 示例：`<BackgroundMusic />`
 
 ## KNOWN_LIMITS

@@ -43,8 +43,9 @@
 
 - 照片墙每 7 张安排一张跨两列 3:2 主照片和一次错位节奏，普通照片仍为 4:5。
 - 照片标题与网格之间加入两枚黑白线稿气球、两枚陈玫色爱心；装饰 `aria-hidden` 且不拦截操作。
-- 背景音乐默认使用 `public/audio/memory-theme.ogg`，登录后由用户点击播放；支持 `VITE_BACKGROUND_MUSIC_URL` 自定义。
-- 播放偏好保存在本地；退出主站时暂停音频并释放播放器。
+- 背景音乐默认使用 `public/audio/memory-theme.ogg`，登录后可播放、暂停或从本机上传自定义音轨。
+- 自选音乐保存到私有 `music` Storage，跨刷新和其他登录客户端读取；支持一键恢复默认。
+- 支持 MP3、OGG、WAV、M4A，单文件上限 16MB；播放偏好保存在本地，退出主站时暂停音频并释放播放器。
 
 ## 4. 构建、离线与预览
 
@@ -53,7 +54,7 @@
 - Service Worker 只在 Supabase Auth 登录后的主站注册，匿名登录页不安装 Service Worker。
 - `public/sw.js` 缓存名 `birthday-memory-static-v4`；只缓存公开 shell，明确绕过 `content.json`、`/memories/` 和跨域 Supabase 请求。
 - Service Worker 不缓存 REST 响应、签名 URL、照片 Blob 或云端响应。
-- 最新构建：101 modules；主 JS `499.66 kB`，`jszip` `97.47 kB`，CSS `34.97 kB`。
+- 最新构建：103 modules；主 JS `504.69 kB`，`jszip` `97.47 kB`，CSS `48.69 kB`。
 
 ## 5. 超时与失败路径
 
@@ -80,9 +81,9 @@
 ## 7. 最新门禁
 
 ```text
-npm test          10 files / 46 tests passed
+npm test          10 files / 49 tests passed
 npm run typecheck exit 0
-npm run build     exit 0, 101 modules
+npm run build     exit 0, 103 modules
 ```
 
 产物包含 `dist/sw.js`、主 JS、CSS 和独立 `jszip` chunk。

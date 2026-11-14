@@ -87,14 +87,14 @@ node scripts/stage7-smoke.mjs
 
 ```text
 npm test
-10 files passed / 46 tests passed
+10 files passed / 49 tests passed
 TEST_EXIT_CODE=0
 
 npm run typecheck
 TYPECHECK_EXIT_CODE=0
 
 npm run build
-101 modules transformed
+103 modules transformed
 BUILD_EXIT_CODE=0
 ```
 

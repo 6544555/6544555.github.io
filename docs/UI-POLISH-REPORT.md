@@ -25,8 +25,9 @@
 ## 3. 音乐
 
 - 默认音频：`public/audio/memory-theme.ogg`，58,006 bytes，文件头 `OggS`。
-- 音乐按钮位于 `masthead-actions`，保持 44px 以上；播放时显示三条均衡器短线。
-- 支持播放/暂停、循环和偏好保留；资源缺失时显示“音乐待替换”并禁用。
+- 音乐播放与“换音乐”按钮位于 `masthead-actions`，均保持 44px 以上；播放时显示三条均衡器短线。
+- 登录后可从本机上传 16MB 内的 MP3、OGG、WAV 或 M4A 到 Supabase 私有 `music` 桶。
+- 真实回归：上传 OGG 后音频源切换到 Supabase 私有签名地址，刷新后仍读取自选音轨，恢复默认后重新使用打包音轨并清理自选文件。
 - 不强制首次自动播放；减少动效时关闭均衡器动画。
 
 ## 4. 真实布局结果
@@ -50,9 +51,9 @@
 ## 6. 门禁
 
 ```text
-npm test          10 files / 46 tests passed
+npm test          10 files / 49 tests passed
 npm run typecheck exit 0
-npm run build     exit 0，101 modules
+npm run build     exit 0，103 modules
 ```
 
 ## 7. 未验证与限制

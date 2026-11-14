@@ -1,5 +1,8 @@
 .music-control {
+  display: flex;
   flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
 }
 
 .music-toggle {
@@ -38,6 +41,61 @@
   border-color: rgba(28, 28, 28, 0.16);
   color: var(--graphite);
   cursor: default;
+}
+
+.music-settings-button {
+  min-height: 46px;
+  padding: 0 10px;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.music-settings-button:hover {
+  background: var(--wash);
+}
+
+.music-settings-dialog {
+  width: min(100%, 560px);
+}
+
+.music-settings {
+  padding-top: var(--space-1);
+}
+
+.music-current {
+  margin-bottom: var(--space-1);
+  color: var(--ink);
+  font-family: "Songti SC", SimSun, Georgia, serif;
+  font-size: 22px;
+  line-height: 30px;
+}
+
+.music-format {
+  margin-bottom: var(--space-4);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.music-settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.music-settings-actions button {
+  min-height: 44px;
+}
+
+.music-message {
+  min-height: 24px;
+  margin: var(--space-2) 0 0;
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .music-bars {

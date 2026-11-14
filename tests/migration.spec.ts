@@ -9,6 +9,10 @@ const historicalStoragePolicy = readFileSync(
   new URL('../supabase/migrations/0002_storage_policy.sql', import.meta.url),
   'utf8',
 )
+const musicMigration = readFileSync(
+  new URL('../supabase/migrations/0004_music_bucket.sql', import.meta.url),
+  'utf8',
+)
 
 describe('historical migration safety', () => {
   it('does not reopen anonymous policies after the authenticated migration', () => {
@@ -17,6 +21,28 @@ describe('historical migration safety', () => {
     expect(historicalStoragePolicy.indexOf('0002 skipped')).toBeLessThan(
       historicalStoragePolicy.indexOf('photos_public_access'),
     )
+  })
+})
+
+describe('0004 private music bucket migration', () => {
+  it('creates a private audio bucket with authenticated-only policies', () => {
+    expect(musicMigration).toContain("'music'")
+    expect(musicMigration).toContain('16777216')
+    expect(musicMigration).toContain("'audio/mpeg'")
+    expect(musicMigration).toContain("'audio/ogg'")
+    expect(musicMigration).toContain("'audio/wav'")
+    expect(musicMigration).toContain("'audio/mp4'")
+
+    for (const policy of [
+      'music_authenticated_select',
+      'music_authenticated_insert',
+      'music_authenticated_update',
+      'music_authenticated_delete',
+    ]) {
+      expect(musicMigration).toContain(`drop policy if exists ${policy}`)
+      expect(musicMigration).toContain(`create policy ${policy}`)
+    }
+    expect(musicMigration).not.toMatch(/create policy[\s\S]*?to anon/)
   })
 })
 

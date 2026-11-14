@@ -43,11 +43,12 @@ npm run preview
    - `supabase/migrations/0001_init.sql`
    - `supabase/migrations/0002_storage_policy.sql`
    - `supabase/migrations/0003_authenticated_access.sql`
+   - `supabase/migrations/0004_music_bucket.sql`
 2. 在 Auth → Users 中只保留一个共享邮箱密码账号。
 3. 在 Auth 设置中关闭公开注册。
 4. 复制 `.env.example` 为本地 `.env`，填入项目 URL 与 anon key。
 5. 不创建、不提交、不写入任何管理权限密钥。
-6. 三份 SQL 具有重复执行保护，但仍建议先在测试项目验证。
+6. 四份 SQL 具有重复执行保护，但仍建议先在测试项目验证。
 
 本地环境变量：
 
@@ -68,17 +69,20 @@ GitHub Actions 使用仓库 Secrets：
 
 默认音轨为 `public/audio/memory-theme.ogg`，登录后通过页头的“背景音乐”按钮播放。浏览器的自动播放限制会让首次播放需要一次点击；暂停后会记住偏好。
 
-替换为自定义音乐：
+更换音乐：
 
-1. 将音频放到 `public/audio/`。
-2. 修改 `src/ui/BackgroundMusic.tsx` 中的 `DEFAULT_MUSIC_FILE`，或设置 `VITE_BACKGROUND_MUSIC_URL`。
-3. 使用你有权使用的音频文件；建议 OGG/MP3、30–90 秒循环、低响度。
+1. 登录后点页头“换音乐”。
+2. 选择不超过 16MB 的 MP3、OGG、WAV 或 M4A。
+3. 音轨会上传到私有 `music` Storage，刷新和其他设备登录后继续使用。
+4. 点“恢复默认”可删除自选音轨并切回打包音轨。
+
+仍需在构建时固定默认音轨时，可替换 `public/audio/memory-theme.ogg` 或设置 `VITE_BACKGROUND_MUSIC_URL`。
 
 ## GitHub Pages
 
 1. 创建并推送仓库，默认分支使用 `main`。
 2. 在仓库 Settings → Pages → Source 中选择 GitHub Actions。
-3. 添加上述两个 Repository Secrets。
+3. 添加上述四个 Repository Secrets。
 4. 手动运行 `Deploy GitHub Pages`，或推送到 `main`。
 
 部署工作流会执行测试、类型检查和生产构建。仓库创建、commit、push 和真实部署需要仓库所有者明确执行。
