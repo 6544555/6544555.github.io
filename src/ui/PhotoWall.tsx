@@ -317,30 +317,34 @@ export function PhotoWall({
           onClose={closeViewer}
           className="photo-viewer"
         >
-          <div className="photo-viewer-image">
-            <PhotoImage
-              photo={selected}
-              store={store}
-              cloudState={cloudState}
-              eager
-            />
-          </div>
-          <div className="photo-viewer-meta">
-            <time dateTime={selected.takenAt}>{formatDate(selected.takenAt)}</time>
-            {selected.note ? <p>{selected.note}</p> : null}
+          <div className="photo-viewer-scroll">
+            <div className="photo-viewer-image">
+              <PhotoImage
+                photo={selected}
+                store={store}
+                cloudState={cloudState}
+                eager
+              />
+            </div>
+            <div className="photo-viewer-meta">
+              <time dateTime={selected.takenAt}>{formatDate(selected.takenAt)}</time>
+              {selected.note ? <p>{selected.note}</p> : null}
+            </div>
           </div>
           {selected.storagePath ? (
-            <button
-              type="button"
-              className="danger-button"
-              onClick={() => {
-                closeViewer()
-                onRequestDelete(selected)
-              }}
-              disabled={!writable}
-            >
-              {COPY.deletePhotoAction}
-            </button>
+            <div className="photo-viewer-actions">
+              <button
+                type="button"
+                className="danger-button"
+                onClick={() => {
+                  closeViewer()
+                  onRequestDelete(selected)
+                }}
+                disabled={!writable}
+              >
+                {COPY.deletePhotoAction}
+              </button>
+            </div>
           ) : null}
         </Dialog>
       ) : null}

@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, type MouseEvent, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { COPY } from '../copy'
 
 interface DialogProps {
@@ -74,7 +75,7 @@ export function Dialog({
     if (event.target === event.currentTarget) onClose()
   }
 
-  return (
+  return createPortal(
     <div className="dialog-backdrop" onMouseDown={handleBackdrop}>
       <section
         ref={panelRef}
@@ -92,6 +93,7 @@ export function Dialog({
         </h2>
         {children}
       </section>
-    </div>
+    </div>,
+    document.body,
   )
 }
