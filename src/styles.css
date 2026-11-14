@@ -5114,3 +5114,168 @@ p {
   }
 }
 
+/* Login validation stays inside the paper, v8. */
+.gate-form {
+  position: relative;
+}
+
+.gate-message {
+  min-height: 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 0;
+  border: 0;
+  color: var(--mauve);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.gate-message:not(:empty)::before {
+  width: 28px;
+  height: 1px;
+  flex: 0 0 28px;
+  margin-top: 8px;
+  background: currentColor;
+  content: "";
+}
+
+.gate-message:empty {
+  min-height: 22px;
+}
+
+.line-field input[aria-invalid="true"] {
+  color: var(--ink);
+}
+
+.line-field:has(input[aria-invalid="true"]) {
+  border-bottom-color: var(--mauve);
+}
+
+@media (max-width: 420px) {
+  .gate-message {
+    gap: 8px;
+  }
+
+  .gate-message:not(:empty)::before {
+    width: 20px;
+    flex-basis: 20px;
+  }
+}
+
+/* Lower-page vital trace, v9. */
+.heartbeat-divider {
+  width: min(100% - 48px, 1200px);
+  margin-inline: auto;
+  padding-top: 24px;
+  overflow: hidden;
+  color: var(--ink);
+}
+
+.heartbeat-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--graphite);
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.heartbeat-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.heartbeat-meta span:first-child::before {
+  width: 32px;
+  height: 1px;
+  background: var(--ink);
+  content: "";
+}
+
+.heartbeat-trace {
+  width: 100%;
+  height: clamp(64px, 7vw, 96px);
+  display: block;
+  overflow: visible;
+  margin-top: 4px;
+}
+
+.heartbeat-base,
+.heartbeat-pulse {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.heartbeat-base {
+  stroke: var(--ink);
+  stroke-width: 1;
+  opacity: 0.12;
+}
+
+.heartbeat-pulse {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  stroke-dasharray: 0.18 0.82;
+  animation: heartbeat-scan 5.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@keyframes heartbeat-scan {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: -1;
+  }
+}
+
+.site-footer {
+  margin-top: 32px;
+}
+
+@media (min-width: 768px) {
+  .heartbeat-divider {
+    width: min(100% - 96px, 1200px);
+  }
+}
+
+@media (max-width: 767px) {
+  .heartbeat-divider {
+    width: min(100% - 48px, 1200px);
+    padding-top: 16px;
+  }
+
+  .heartbeat-trace {
+    height: 64px;
+  }
+}
+
+@media (max-width: 420px) {
+  .heartbeat-divider {
+    width: calc(100% - 40px);
+  }
+
+  .heartbeat-meta span:last-child {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heartbeat-pulse {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+
+  .heartbeat-base {
+    opacity: 0.18;
+  }
+}
+

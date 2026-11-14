@@ -8,6 +8,7 @@ export const COPY = {
   gatePassword: '密码',
   gateSubmit: '进入纪念册',
   gateMismatch: '这次没有认出你，再试一次',
+  gateEmailInvalid: '邮箱格式不完整，请再检查一下',
   authLoading: '正在打开纪念册',
   authDegraded: '入口暂时没有回应，再试一次',
   authOffline: '等网络回来后再打开',

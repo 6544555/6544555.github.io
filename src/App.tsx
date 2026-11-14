@@ -32,6 +32,7 @@ import { BackgroundMusic } from './ui/BackgroundMusic'
 import { recoverFromPermissionFailure } from './ui/authViewModel'
 import { ConfirmDialog, EntryDialog } from './ui/EntryDialog'
 import { Gate } from './ui/Gate'
+import { HeartbeatDivider } from './ui/HeartbeatDivider'
 import { HeartRain } from './ui/HeartRain'
 import {
   cloudStateFrom,
@@ -492,6 +493,8 @@ function MemorySite({
             onExport={() => void handleExport()}
           />
         </main>
+
+        <HeartbeatDivider />
 
         <footer className="site-footer">
           <p className="footer-edition" aria-hidden="true">

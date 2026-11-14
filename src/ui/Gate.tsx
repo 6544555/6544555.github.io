@@ -37,6 +37,11 @@ export function Gate({ reason, onSignIn }: GateProps) {
       setMessage(COPY.gateMismatch)
       return
     }
+    if (emailRef.current && !emailRef.current.validity.valid) {
+      setMessage(COPY.gateEmailInvalid)
+      emailRef.current.focus()
+      return
+    }
 
     setBusy(true)
     setMessage('')
@@ -62,7 +67,7 @@ export function Gate({ reason, onSignIn }: GateProps) {
         </h1>
         <p className="gate-subtitle">{COPY.gateSubtitle}</p>
 
-        <form className="gate-form" onSubmit={handleSubmit}>
+        <form className="gate-form" onSubmit={handleSubmit} noValidate>
           <label className="line-field">
             <span>{COPY.gateAccount}</span>
             <input
@@ -70,9 +75,16 @@ export function Gate({ reason, onSignIn }: GateProps) {
               type="email"
               inputMode="email"
               autoComplete="email"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => {
+                setEmail(event.target.value)
+                if (message) setMessage('')
+              }}
               aria-describedby="auth-message"
+              aria-invalid={message === COPY.gateEmailInvalid}
               disabled={busy || !connectionReady}
             />
           </label>
@@ -81,9 +93,14 @@ export function Gate({ reason, onSignIn }: GateProps) {
             <input
               type="password"
               autoComplete="current-password"
+              spellCheck={false}
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => {
+                setPassword(event.target.value)
+                if (message) setMessage('')
+              }}
               aria-describedby="auth-message"
+              aria-invalid={message === COPY.gateMismatch}
               disabled={busy || !connectionReady}
             />
           </label>

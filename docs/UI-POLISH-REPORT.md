@@ -101,15 +101,31 @@
 
 截图：[爱心彩蛋开关 1440px](evidence/eggs-switch-1440.png)
 
-## 9. 门禁
+## 9. 登录表单反馈
+
+- 登录表单使用 `noValidate`，不再出现浏览器原生邮箱校验浮泡。
+- 邮箱格式不完整时，在字段下方显示陈玫色编辑式注记“邮箱格式不完整，请再检查一下”，并在输入变化时清除旧提示。
+- 邮箱仍使用 `type="email"`、`inputMode="email"` 和 `autoComplete="email"`；密码管理器与移动端邮箱键盘不受影响。
+- 375px 实测注记颜色为 `rgb(129, 109, 112)`，前置线宽 20px，无边框浮层，输入框高 44px，页面无横向溢出。
+
+## 10. v10 下半页动态心电图
+
+- 留言区后、页脚前新增独立 `Vital trace` 分隔带；底层为 12% 墨色完整波形，黑色脉段沿 SVG 路径每 5.6 秒循环移动。
+- 波形使用 `pathLength="1"` 和 `stroke-dasharray: 0.18 0.82`，不依赖图片、Canvas 或外部图标库。
+- 375/768/1440 宽度分别为 320/657/1200px，均无横向溢出，分隔带与页脚保持 32px 间距。
+- 减少动态模式关闭移动并显示完整静态波形；页脚和导出操作位置不变。
+
+截图：[动态心电图 1440px](evidence/heartbeat-trace-1440.png)
+
+## 11. 门禁
 
 ```text
 npm test          11 files / 51 tests passed
 npm run typecheck exit 0
-npm run build     exit 0，105 modules
+npm run build     exit 0，106 modules
 ```
 
-## 10. 未验证与限制
+## 12. 未验证与限制
 
 - 真实私密照片数量取决于 Supabase 数据；本次截图使用当前空数据状态。
 - 音乐资源能够播放，但未在真实手机上验证扬声器音量和系统媒体控制。
