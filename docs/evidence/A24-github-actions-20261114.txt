@@ -1,0 +1,34 @@
+GitHub Pages and keepalive deployment evidence
+Date: 2026-11-14 (Asia/Shanghai)
+Repository: https://github.com/6544555/birthday-memory
+Remote main commit: ce3afb2ef3669f636acdbc000abb08288eaeb1cf
+
+Pages
+- Live URL: https://6544555.github.io/birthday-memory/
+- HTTP status: 200
+- HTML root mount present: true
+- Page title: 纪念日
+- Deploy workflow run #2: success
+- Run: https://github.com/6544555/birthday-memory/actions/runs/43571559681
+- Build steps: npm ci, npm test, npx tsc --noEmit, npm run build all success
+- Deploy step: success
+
+Live login
+- Anonymous page: private shell=0, registration text=0
+- Shared-account login: private shell=1, photo section=1, music button=1
+- Supabase Auth connection resets occurred during prewarm but were retried by the application and the final login succeeded.
+
+Keepalive
+- Workflow run #1: success
+- Run: https://github.com/6544555/birthday-memory/actions/runs/43571561768
+- Auth sign-in HTTP status: 200
+- REST read HTTP status: 200
+- Required secrets check: success
+- Access token is masked by the workflow.
+
+Repository secrets
+- Supabase URL
+- Supabase anon/publishable key
+- Shared account email
+- Shared account password
+- Values are not recorded in this file.

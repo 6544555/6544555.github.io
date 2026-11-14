@@ -8,7 +8,8 @@
 - 公开注册关闭；匿名访客只看到登录入口，私密内容只从 authenticated RLS/Storage 读取。
 - 六种云端聚合状态：`LOADING / READY / DEGRADED / PAUSED / QUOTA / OFFLINE`。
 - 静态构建只包含公开壳层，真实内容替换与账号设置见 `docs/REPLACEMENT_CHECKLIST.md`。
-- GitHub Pages 部署工作流和 Supabase 保活工作流已提供，尚未在本机执行真实发布。
+- 已发布到 https://6544555.github.io/birthday-memory/。
+- GitHub Pages 部署与 Supabase keepalive 均已真实运行成功。
 - 管理密钥不进入浏览器。浏览器只使用 Supabase URL 和 anon key。
 
 ## 本地运行

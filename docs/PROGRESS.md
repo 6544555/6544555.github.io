@@ -15,8 +15,9 @@
 | S4 production preview | 完成 | 登录、刷新恢复、退出清理、375px 无横向溢出、登录后断网降级均真实通过 |
 | S4 跨浏览器共享 | 完成 | 两个独立 Edge profile 用同一共享账号完成 A 写入、B 读取、删除同步和离线验证 |
 | S4 本地 Git | 完成 | `main` 根提交已创建；`.env` 历史 0 条、索引未命中、工作区干净 |
-| S4 GitHub Actions/Pages | 未执行 | 本地仓库未配置 remote；未配置 Secrets，未运行发布/保活 |
-| 整体交付 | 本地完成；远程 BLOCKED | A24 与真实 Pages 发布需要额外远程授权 |
+| S4 GitHub Actions/Pages | 完成 | Pages run #2 成功；keepalive run #1 成功，Auth/REST 均 HTTP 200 |
+| 线上地址 | 可用 | https://6544555.github.io/birthday-memory/ ，线上共享账号登录通过 |
+| 整体交付 | DONE | 本地门禁、真实 Supabase、独立复审、Git 隔离、Pages 与保活全部完成 |
 
 ## 最新门禁
 
@@ -46,8 +47,9 @@ BUILD_EXIT_CODE=0
 - 三表与私有 Storage：insert/read/delete 全部成功，测试数据 remaining `0`。
 - 详见 `docs/evidence/auth-live-matrix-20261114.txt`。
 
-## 剩余阻塞
+## 发布
 
-1. **A24**：GitHub Actions 保活未真实执行。
-2. GitHub Pages 真实发布需要额外远程发布授权。
-3. 本地 Git 根提交与 A27 已完成；未配置 remote，未 push。
+- 线上站点：https://6544555.github.io/birthday-memory/
+- GitHub 仓库：https://github.com/6544555/birthday-memory
+- Pages 与 keepalive 成功日志见 `docs/evidence/A24-github-actions-20261114.txt`。
+- 非 P0 风险仍记录在 `docs/REVIEW.md`，不阻塞当前可用交付。

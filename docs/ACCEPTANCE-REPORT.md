@@ -4,7 +4,7 @@
 环境：Windows；Node `v26.13.0`；Vite `7.3.8`；Microsoft Edge `157.0.4341.46`；Playwright `1.62.1`；production preview `http://127.0.0.1:4174/birthday-memory/`。  
 权限模型：Supabase Auth 关闭公开注册，只保留一个共享邮箱密码账号；匿名只看到公开登录入口。
 
-结论：**本地交付完成；远程发布 BLOCKED**。单账号 Auth、匿名 RLS/Storage 拒绝、唯一账号跨浏览器读写、登录后离线、非均匀照片编排、庆祝点缀、自定义背景音乐、响应式和本地门禁已通过，A27 已闭环。A24 保活与 GitHub Pages 真实发布因未授权远程发布而保持未执行。
+结论：**交付完成**。单账号 Auth、匿名 RLS/Storage 拒绝、唯一账号跨浏览器读写、登录后离线、非均匀照片编排、庆祝点缀、自定义背景音乐、响应式和本地门禁已通过；GitHub Pages 与 keepalive 工作流也已真实运行成功。线上地址：https://6544555.github.io/birthday-memory/。
 
 | 编号 | 结果 | 环境 | 操作 | 证据 |
 |---|---|---|---|---|
@@ -31,7 +31,7 @@
 | A21 [P0] | 通过 | 登录后 Edge，真实离线 | 登录后切离线并刷新 | 主站、本地文本快照和离线文案可见，无白屏 |
 | A22 | 通过 | 旧暂停回归 | 模拟项目暂停特征 | 显示“这里在休息，晚点再来”，无重试按钮 |
 | A23 [P0] | 通过 | 两个独立 Edge profile | 退出登录并检查本地状态 | 主站 `0`、snapshot `null`、认证缓存 `null`、Auth token `0`；自动会话失效清理由单测覆盖 |
-| A24 | 未验证 | 未推送 GitHub、无 Secrets | 运行 keepalive | 工作流已改为共享账号登录、mask token 后读取 photos；尚无真实 Actions 日志 |
+| A24 | 通过 | GitHub Actions / repository secrets | 运行 Pages 部署与 keepalive | Pages run #2 成功；keepalive run #1 成功；Auth `200`、REST `200`；`docs/evidence/A24-github-actions-20261114.txt` |
 | A25 | 通过 | 旧文件边界回归 | 选择 8.1MB 与 10MB 文件 | 均在本地拒绝，无上传请求 |
 | A26 [P0] | 通过 | 源码、环境示例与 `dist` | 扫描真实管理密钥与 JWT | 未发现管理密钥赋值或真实密钥；安全警示文字不参与判定 |
 | A27 [P0] | 通过 | 本地 Git 仓库 `main` | 初始化、创建根提交、检查 `.env` 历史/索引和工作区 | `.env` 历史 0 条；`git ls-files --error-unmatch .env` 退出 1；工作区干净；`docs/evidence/A27-git-isolation.txt` |
@@ -58,9 +58,10 @@ npm run typecheck exit 0
 npm run build     exit 0, 101 modules
 ```
 
-## 远程发布阻塞
+## 线上发布
 
-1. **A24**：需要 GitHub 远程仓库、四个 Secrets 和真实 Actions 运行日志。
-2. **GitHub Pages**：需要用户另行授权创建/推送远程仓库后执行真实发布。
-
-本地仓库已初始化并完成根提交，没有 remote，也没有 push。远程发布未授权，因此 A24 与真实 Pages URL 保持未验证。
+- GitHub Pages：https://6544555.github.io/birthday-memory/
+- Pages 部署 run #2：成功
+- Keepalive run #1：成功，Auth `200`、REST `200`
+- 远端 `main`：`ce3afb2ef3669f636acdbc000abb08288eaeb1cf`
+- 四个 Repository Secrets 已配置；值未写入仓库或证据文件。
