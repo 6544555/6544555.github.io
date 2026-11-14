@@ -30,6 +30,30 @@ interface UploadTask {
   detail: string
 }
 
+export const PHOTO_FRAME_CLASSES = [
+  'frame-gallery',
+  'frame-matte',
+  'frame-rule',
+  'frame-archive',
+  'frame-inset',
+] as const
+
+export function photoCardClass(index: number, isRecent = false): string {
+  const frame = PHOTO_FRAME_CLASSES[index % PHOTO_FRAME_CLASSES.length]
+  const composition =
+    index % 7 === 0
+      ? 'photo-feature photo-landscape'
+      : index % 5 === 2
+        ? 'photo-square'
+        : index % 5 === 3
+          ? 'photo-tall'
+          : index % 7 === 4
+            ? 'photo-offset'
+            : ''
+
+  return `photo-card ${frame} ${composition}${isRecent ? ' is-new' : ''}`.trim()
+}
+
 interface PhotoWallProps {
   photos: PhotoItem[]
   cloudState: CloudState
@@ -85,6 +109,7 @@ export function PhotoWall({
   const [dragging, setDragging] = useState(false)
   const [notice, setNotice] = useState('')
   const [selected, setSelected] = useState<PhotoItem | null>(null)
+  const [libraryOpen, setLibraryOpen] = useState(false)
   const [recentIds, setRecentIds] = useState<Set<string>>(new Set())
 
   const closeViewer = useCallback(() => setSelected(null), [])
@@ -207,6 +232,14 @@ export function PhotoWall({
           <span className="quiet-count">{COPY.photoCount(photos.length)}</span>
           <button
             type="button"
+            className="secondary-button photo-library-button"
+            onClick={() => setLibraryOpen(true)}
+            disabled={photos.length === 0}
+          >
+            {COPY.photoLibrary}
+          </button>
+          <button
+            type="button"
             className="secondary-button"
             onClick={() => inputRef.current?.click()}
             disabled={!writable}
@@ -268,9 +301,7 @@ export function PhotoWall({
             {photos.map((photo, index) => (
               <article
                 key={photo.id}
-                className={`photo-card tilt-${index % 3} ${
-                  index % 7 === 0 ? 'photo-feature' : index % 7 === 4 ? 'photo-offset' : ''
-                } ${recentIds.has(photo.id) ? 'is-new' : ''}`.trim()}
+                className={photoCardClass(index, recentIds.has(photo.id))}
               >
                 <button
                   type="button"
@@ -335,6 +366,49 @@ export function PhotoWall({
         onRetry={onRetryCloud}
         onExport={onExport}
       />
+
+      {libraryOpen ? (
+        <Dialog
+          title={COPY.photoLibraryTitle}
+          onClose={() => setLibraryOpen(false)}
+          className="photo-library-dialog"
+        >
+          <div className="photo-library-heading">
+            <p>{COPY.photoLibraryHint}</p>
+            <span>{COPY.photoCount(photos.length)}</span>
+          </div>
+          <div className="photo-library-grid">
+            {photos.map((photo, index) => (
+              <button
+                key={photo.id}
+                type="button"
+                className={`photo-library-card ${
+                  PHOTO_FRAME_CLASSES[index % PHOTO_FRAME_CLASSES.length]
+                }`}
+                aria-label={`${photo.note || photo.filename}，${formatDate(photo.takenAt)}`}
+                onClick={() => {
+                  setLibraryOpen(false)
+                  setSelected(photo)
+                }}
+              >
+                <span className="photo-frame photo-library-frame">
+                  <PhotoImage
+                    photo={photo}
+                    store={store}
+                    cloudState={cloudState}
+                    className="photo-library-image"
+                    eager={index < 12}
+                  />
+                </span>
+                <span className="photo-library-caption">
+                  <time dateTime={photo.takenAt}>{formatDate(photo.takenAt)}</time>
+                  {photo.note ? <span>{photo.note}</span> : null}
+                </span>
+              </button>
+            ))}
+          </div>
+        </Dialog>
+      ) : null}
 
       {selected ? (
         <Dialog

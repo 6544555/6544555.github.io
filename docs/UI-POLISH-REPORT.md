@@ -119,15 +119,36 @@
 
 截图：[动态心电图 1440px](evidence/heartbeat-trace-1440.png)
 
-## 11. 门禁
+## 11. v11 混合相框与相片库
+
+- 五类相框循环应用：黑色细框、白卡纸、双线框、深墨框和灰纸内衬；相框只用边线、留白和纸色，不使用阴影或圆角。
+- 照片按主图 3:2、普通 4:5、方幅 1:1、竖幅 3:4 和向下错位节奏混合排列，375/768/1440 继续保持 2/3/4 轨。
+- 照片区新增“相片库”，以 4/3/2 列 contact sheet 集中展示全部照片；点击缩略图进入现有大图查看、删除和二次确认流程。
+- 相片库复用现有照片数据与签名地址缓存，不复制媒体，不改变上传、删除、Auth 或 Storage 权限。
+
+真实上传结果：
 
 ```text
-npm test          11 files / 51 tests passed
+临时上传：5 张
+相框：frame-gallery / frame-matte / frame-rule / frame-archive / frame-inset
+画幅：3:2 / 4:5 / 1:1 / 3:4 / 错位 4:5
+相片库：5 张全部可见，点击进入大图正常
+清理：逐张删除后照片数 5 → 0，刷新后仍为 0
+375px：无横向溢出
+768px DOM：照片墙 3 轨、相片库 3 列；五种画幅计算值正确，无横向溢出
+```
+
+截图：[混合相框 1440px](evidence/photo-frames-1440.png)、[相片库 1440px](evidence/photo-library-1440.png)
+
+## 12. 门禁
+
+```text
+npm test          12 files / 55 tests passed
 npm run typecheck exit 0
 npm run build     exit 0，106 modules
 ```
 
-## 12. 未验证与限制
+## 13. 未验证与限制
 
 - 真实私密照片数量取决于 Supabase 数据；本次截图使用当前空数据状态。
 - 音乐资源能够播放，但未在真实手机上验证扬声器音量和系统媒体控制。

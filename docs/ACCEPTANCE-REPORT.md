@@ -44,6 +44,7 @@
 | A34 | 通过 | production 375 / 768 / 1440 | 切换爱心彩蛋开关，检查粒子、类型、挂载点、点击穿透和减少动态 | 开启后生成 70 枚彩蛋：50 枚五色小爱心、10 枚玫瑰、10 枚花苞；开关具有 `role="switch"` 与 `aria-checked`；层固定挂载到 `BODY`，`pointer-events: none` 且 `aria-hidden`；关闭后粒子归零；减少动态时静态排列 |
 | A35 | 通过 | production 375 / 768 / 1440 | 滚动至留言区与页脚之间，检查心电波形、动画和减少动态 | 分隔带宽 320/657/1200px，均无横向溢出并与页脚保持 32px 间距；脉段颜色 `rgb(28,28,28)`，动画 `heartbeat-scan` 5.6s；减少动态时动画 `none`、显示完整静态波形；`docs/evidence/heartbeat-trace-1440.png` |
 | A36 | 通过 | Edge production 375×812 / 真实共享账号 | 新增临时留言 → 点击“移走这条” → 二次确认 → 刷新 | 仅云端留言显示删除入口；确认弹层标题为“要把这条留言移走吗”；`messages.delete` 成功后条数恢复为 `0`，刷新后不再出现；按钮 49×44px，页面无横向溢出；`docs/evidence/A36-message-delete.txt` |
+| A37 | 通过 | production preview 375×812 / 768×1024 / 1440×900 | 一次上传 5 张临时照片，检查相框、画幅、相片库、查看与删除 | 命中 5 种相框和 3:2、4:5、1:1、3:4、错位 4:5 五种节奏；相片库显示 5 张并可进入大图；逐张删除后刷新为 0，无横向溢出；`docs/evidence/photo-frames-1440.png`、`photo-library-1440.png` |
 
 ## 真实 Supabase 配置
 
@@ -59,7 +60,7 @@
 ## 最新门禁
 
 ```text
-npm test          11 files / 52 tests passed
+npm test          12 files / 55 tests passed
 npm run typecheck exit 0
 npm run build     exit 0, 106 modules
 ```
