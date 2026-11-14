@@ -5,7 +5,7 @@ import { resolveMusicUrl } from '../src/ui/BackgroundMusic'
 describe('background music configuration', () => {
   it('uses the bundled loop under the deployed base path', () => {
     expect(resolveMusicUrl('/birthday-memory/')).toBe(
-      '/birthday-memory/audio/memory-theme.mp3',
+      '/birthday-memory/audio/memory-theme.wav',
     )
   })
 

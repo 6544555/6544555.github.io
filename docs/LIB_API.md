@@ -266,12 +266,12 @@
 ### `resetCustomMusic(): Promise<void>`
 说明：删除 `music/theme` 下的全部自选音轨。
 参数：无。
-建议 UI：成功后切回 `public/audio/memory-theme.mp3`。
+建议 UI：成功后切回 `public/audio/memory-theme.wav`。
 
 ## src/ui/BackgroundMusic.tsx
 
 ### `resolveMusicUrl(baseUrl, configuredUrl?): string`
-说明：优先使用 `VITE_BACKGROUND_MUSIC_URL`，否则返回部署 base 下的 `audio/memory-theme.mp3`。
+说明：优先使用 `VITE_BACKGROUND_MUSIC_URL`，否则返回部署 base 下的 `audio/memory-theme.wav`。
 参数：Vite `BASE_URL` 与可选自定义 URL。  
 返回：可直接赋给 `<audio src>` 的地址。  
 建议 UI：登录后才挂载；音频失败不影响主业务。  

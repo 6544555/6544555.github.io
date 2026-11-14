@@ -54,14 +54,14 @@
 
 ## 5. 背景音乐
 
-默认使用原创合成氛围音轨 `public/audio/memory-theme.mp3`。登录后：
+默认使用原创合成氛围音轨 `public/audio/memory-theme.wav`。登录后：
 
 1. 点页头“换音乐”。
 2. 选择不超过 16MB 的 MP3、WAV 或 M4A。
 3. 音轨保存到私有 `music` 桶，刷新和另一设备登录后继续使用。
 4. 点“恢复默认”会删除自选音轨并回到打包音轨。
 
-如需修改打包默认音轨，可替换 `public/audio/memory-theme.mp3`，或设置 `VITE_BACKGROUND_MUSIC_URL`。使用有权公开播放的音频；首次播放必须由用户点击触发。
+如需修改打包默认音轨，可替换 `public/audio/memory-theme.wav`，或设置 `VITE_BACKGROUND_MUSIC_URL`。使用有权公开播放的音频；首次播放必须由用户点击触发。
 
 ## 6. 字体
 

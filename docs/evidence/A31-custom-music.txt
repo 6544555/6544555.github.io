@@ -10,11 +10,16 @@ Migration
 - Allowed types: audio/mpeg, audio/wav, audio/x-wav, audio/mp4.
 - Storage policies: authenticated SELECT / INSERT / UPDATE / DELETE only.
 
+Default playback
+- Bundled WAV: `/audio/memory-theme.wav`.
+- Browser audio state: `readyState=4`, `error=null`.
+- Playback advanced from 4.02s to 6.41s after the play action; pause toggled successfully.
+
 Browser flow
 - Opened "换音乐" from the authenticated site header.
-- Selected `public/audio/memory-theme.mp3`.
-- Upload completed and the audio element switched to a Supabase signed Storage URL under `music/theme/`.
+- Selected `public/audio/memory-theme.wav`.
+- Upload completed after the transient retry path and the audio element switched to a Supabase signed Storage URL under `music/theme/background.wav`.
 - Reloaded the page: the custom track was found again and a fresh signed URL was used.
-- Selected "恢复默认": the audio source switched back to `/audio/memory-theme.mp3`.
+- Selected "恢复默认": the audio source switched back to `/audio/memory-theme.wav`.
 - The custom object was removed by the reset operation.
 - Test data was cleaned; the live site remains on the bundled default track.

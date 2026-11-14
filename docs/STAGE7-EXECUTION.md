@@ -87,7 +87,7 @@ node scripts/stage7-smoke.mjs
 
 ```text
 npm test
-10 files passed / 49 tests passed
+11 files passed / 51 tests passed
 TEST_EXIT_CODE=0
 
 npm run typecheck

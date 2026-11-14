@@ -1,6 +1,7 @@
 import type { CloudState, InputErrorReason } from './types'
 
 export const COPY = {
+  skipToContent: '跳到主要内容',
   gateTitle: '一封纪念信',
   gateSubtitle: '用同一个邮箱和密码打开',
   gateAccount: '邮箱',
@@ -31,6 +32,10 @@ export const COPY = {
   musicTooLarge: '音乐文件不能超过 16MB',
   musicUnsupported: '请选择 MP3、WAV 或 M4A',
   musicFormat: 'MP3、WAV 或 M4A，不超过 16MB',
+  heartRain: '小黑爱心雨',
+  heartRainStatus: '小黑爱心雨已落下',
+  heroDeck: '把照片、日子和想说的话，收进同一本纪念册。',
+  browsePhotos: '翻开照片',
   openingSkip: '直接进入',
   navPhotos: '照片',
   navTimeline: '时光',

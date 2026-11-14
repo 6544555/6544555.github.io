@@ -24,7 +24,7 @@
 
 ## 3. 音乐
 
-- 默认音频：`public/audio/memory-theme.mp3`，400,658 bytes，MP3，33.36 秒。
+- 默认音频：`public/audio/memory-theme.wav`，1,469,070 bytes，WAV PCM，33.31 秒。
 - 音乐播放与“换音乐”按钮位于 `masthead-actions`，均保持 44px 以上；播放时显示三条均衡器短线。
 - 登录后可从本机上传 16MB 内的 MP3、WAV 或 M4A 到 Supabase 私有 `music` 桶。
 - 真实回归：上传 MP3 后音频源切换到 Supabase 私有签名地址，刷新后仍读取自选音轨，恢复默认后重新使用打包音轨并清理自选文件。
@@ -51,7 +51,7 @@
 ## 6. 门禁
 
 ```text
-npm test          10 files / 49 tests passed
+npm test          11 files / 51 tests passed
 npm run typecheck exit 0
 npm run build     exit 0，103 modules
 ```

@@ -104,15 +104,22 @@ async function listTracks(): Promise<Array<{ name: string; path: string; updated
     }))
 }
 
-async function signTrack(path: string): Promise<string> {
-  const { data, error } = await getClient()
-    .storage.from(MUSIC_BUCKET)
-    .createSignedUrl(path, SIGNED_URL_SECONDS)
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
 
-  if (error || !data?.signedUrl) {
-    throw toCloudError(error ?? new Error('music signed URL unavailable'))
+async function signTrack(path: string): Promise<string> {
+  let lastError: unknown
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const { data, error } = await getClient()
+      .storage.from(MUSIC_BUCKET)
+      .createSignedUrl(path, SIGNED_URL_SECONDS)
+
+    if (!error && data?.signedUrl) return data.signedUrl
+    lastError = error ?? new Error('music signed URL unavailable')
+    if (attempt < 2) await wait(250 * (attempt + 1))
   }
-  return data.signedUrl
+  throw toCloudError(lastError)
 }
 
 export async function loadCustomMusic(): Promise<StoredMusicTrack | null> {
@@ -142,21 +149,35 @@ async function removeOtherTracks(keepPath: string): Promise<void> {
 export async function uploadCustomMusic(file: File): Promise<StoredMusicTrack> {
   const info = assertMusicFile(file)
   const path = `${MUSIC_PREFIX}/background.${info.extension}`
-  const { error } = await getClient()
-    .storage.from(MUSIC_BUCKET)
-    .upload(path, file, {
-      cacheControl: '3600',
-      contentType: info.mimeType,
-      upsert: true,
-    })
+  let lastError: unknown
 
-  if (error) throw toCloudError(error)
-  await removeOtherTracks(path)
-  return {
-    path,
-    url: await signTrack(path),
-    ...info,
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const { error } = await getClient()
+      .storage.from(MUSIC_BUCKET)
+      .upload(path, file, {
+        cacheControl: '3600',
+        contentType: info.mimeType,
+        upsert: true,
+      })
+
+    if (!error) {
+      try {
+        await removeOtherTracks(path)
+      } catch {
+        // The newly uploaded track remains usable if old-track cleanup is delayed.
+      }
+      return {
+        path,
+        url: await signTrack(path),
+        ...info,
+      }
+    }
+
+    lastError = error
+    if (attempt < 2) await wait(300 * (attempt + 1))
   }
+
+  throw toCloudError(lastError)
 }
 
 export async function resetCustomMusic(): Promise<void> {

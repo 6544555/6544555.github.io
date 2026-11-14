@@ -56,7 +56,7 @@
 ## 6. 门禁
 
 ```text
-npm test          10 files / 49 tests passed
+npm test          11 files / 51 tests passed
 npm run typecheck exit 0
 npm run build     exit 0, 103 modules
 ```

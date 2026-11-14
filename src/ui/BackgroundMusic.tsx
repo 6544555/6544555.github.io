@@ -10,7 +10,7 @@ import { Dialog } from './Dialog'
 import './background-music.css'
 
 const MUSIC_PREFERENCE_KEY = 'bday:v1:music-enabled'
-const DEFAULT_MUSIC_FILE = 'audio/memory-theme.mp3'
+const DEFAULT_MUSIC_FILE = 'audio/memory-theme.wav'
 
 export function resolveMusicUrl(baseUrl: string, configuredUrl?: string): string {
   const custom = configuredUrl?.trim()

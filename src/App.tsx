@@ -32,6 +32,7 @@ import { BackgroundMusic } from './ui/BackgroundMusic'
 import { recoverFromPermissionFailure } from './ui/authViewModel'
 import { ConfirmDialog, EntryDialog } from './ui/EntryDialog'
 import { Gate } from './ui/Gate'
+import { HeartRain } from './ui/HeartRain'
 import {
   cloudStateFrom,
   isValidStartDate,
@@ -41,6 +42,7 @@ import {
 import { Messages } from './ui/Messages'
 import { PhotoWall } from './ui/PhotoWall'
 import { Timeline } from './ui/Timeline'
+import { useRevealSections } from './ui/useRevealSections'
 import './styles.css'
 
 const INTRO_SESSION_KEY = 'bday:v1:intro-seen'
@@ -134,6 +136,7 @@ function MemorySite({
   onSignOut: () => void
   onAuthStateChange: (state: AuthState) => void
 }) {
+  useRevealSections()
   const storeRef = useRef<CloudStore | null>(null)
   if (!storeRef.current) storeRef.current = createCloudStore()
   const store = storeRef.current
@@ -379,6 +382,10 @@ function MemorySite({
 
   return (
     <>
+      <a className="skip-link" href="#main-content">
+        {COPY.skipToContent}
+      </a>
+
       {showIntro ? (
         <div className="intro-reveal">
           <div className="intro-half intro-top" aria-hidden="true">
@@ -402,25 +409,33 @@ function MemorySite({
             <div className="masthead-copy">
               <p className="site-name">{content.site.herName}</p>
               <p className="opening-line">{content.site.openingLine}</p>
-              {canShowDays ? (
-                <div className="seal-wrap">
-                  <button
-                    type="button"
-                    className="date-seal"
-                    aria-expanded={sealOpen}
-                    onClick={() => setSealOpen((value) => !value)}
-                  >
-                    {COPY.daySeal(days)}
-                  </button>
-                  {sealOpen ? (
-                    <p className="seal-reveal" role="status">
+              <p className="masthead-deck">{COPY.heroDeck}</p>
+              <div className="hero-actions">
+                <a className="primary-button hero-primary" href="#photos">
+                  <span>{COPY.browsePhotos}</span>
+                  <span aria-hidden="true">↓</span>
+                </a>
+                {canShowDays ? (
+                  <div className="seal-wrap">
+                    <button
+                      type="button"
+                      className="date-seal"
+                      aria-expanded={sealOpen}
+                      onClick={() => setSealOpen((value) => !value)}
+                    >
                       {COPY.daySeal(days)}
-                    </p>
-                  ) : null}
-                </div>
-              ) : null}
+                    </button>
+                    {sealOpen ? (
+                      <p className="seal-reveal" role="status">
+                        {COPY.daySeal(days)}
+                      </p>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
             </div>
             <div className="masthead-actions">
+              <HeartRain />
               <BackgroundMusic />
               <button
                 type="button"
@@ -439,7 +454,7 @@ function MemorySite({
           </nav>
         </header>
 
-        <main>
+        <main id="main-content" tabIndex={-1}>
           <PhotoWall
             photos={content.photos}
             cloudState={cloudState}
@@ -479,6 +494,9 @@ function MemorySite({
         </main>
 
         <footer className="site-footer">
+          <p className="footer-edition" aria-hidden="true">
+            PRIVATE MEMORY / END NOTE
+          </p>
           <button
             type="button"
             className="footer-export"
