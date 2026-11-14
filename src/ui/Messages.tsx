@@ -15,8 +15,10 @@ interface MessagesProps {
   cloudState: CloudState
   online: boolean
   store: CloudStore
+  deletableIds: Set<string>
   onCloudStateChange: (state: CloudState) => void
   onAdded: (message: MessageItem) => void
+  onDelete: (message: MessageItem) => void
   onRetryCloud: () => void
   onExport: () => void
 }
@@ -26,8 +28,10 @@ export function Messages({
   cloudState,
   online,
   store,
+  deletableIds,
   onCloudStateChange,
   onAdded,
+  onDelete,
   onRetryCloud,
   onExport,
 }: MessagesProps) {
@@ -113,9 +117,23 @@ export function Messages({
                 “
               </span>
               <p>{item.text}</p>
-              {item.createdAt ? (
-                <time dateTime={item.createdAt}>{formatDateTime(item.createdAt)}</time>
-              ) : null}
+              <div className="message-meta">
+                {item.createdAt ? (
+                  <time dateTime={item.createdAt}>{formatDateTime(item.createdAt)}</time>
+                ) : (
+                  <span />
+                )}
+                {deletableIds.has(item.id) ? (
+                  <button
+                    type="button"
+                    className="text-button message-delete"
+                    onClick={() => onDelete(item)}
+                    disabled={!writable}
+                  >
+                    {COPY.deleteMessageAction}
+                  </button>
+                ) : null}
+              </div>
             </article>
           ))}
           {items.length === 0 && cloudState === 'LOADING' ? (

@@ -234,6 +234,18 @@ describe('CloudStore photos and validation', () => {
     })
   })
 
+  it('deletes a valid message by id', async () => {
+    const query = builder({ error: null })
+    mocks.client.from.mockReturnValue(query)
+    const id = '20000000-0000-4000-8000-000000000001'
+
+    await createCloudStore().deleteMessage(id)
+
+    expect(mocks.client.from).toHaveBeenCalledWith('messages')
+    expect((query.delete as ReturnType<typeof vi.fn>)).toHaveBeenCalledTimes(1)
+    expect((query.eq as ReturnType<typeof vi.fn>)).toHaveBeenCalledWith('id', id)
+  })
+
   it('keeps photo paths and blobs together during export', async () => {
     const photo = {
       id: '00000000-0000-4000-8000-000000000001',

@@ -51,6 +51,7 @@ const INTRO_SESSION_KEY = 'bday:v1:intro-seen'
 type DeleteTarget =
   | { kind: 'photo'; item: PhotoItem }
   | { kind: 'memory'; item: MemoryItem }
+  | { kind: 'message'; item: MessageItem }
 
 interface ExportStatus {
   busy: boolean
@@ -206,6 +207,10 @@ function MemorySite({
     () => new Set(cloudMemories.map((entry) => entry.id)),
     [cloudMemories],
   )
+  const cloudMessageIds = useMemo(
+    () => new Set(cloudMessages.map((message) => message.id)),
+    [cloudMessages],
+  )
 
   const finishIntro = useCallback(() => {
     setShowIntro(false)
@@ -324,10 +329,15 @@ function MemorySite({
           entry.photoId === deleteTarget.item.id ? { ...entry, photoId: undefined } : entry,
         ),
       )
-    } else {
+    } else if (deleteTarget.kind === 'memory') {
       await store.deleteMemory(deleteTarget.item.id)
       setCloudMemories((current) =>
         current.filter((entry) => entry.id !== deleteTarget.item.id),
+      )
+    } else {
+      await store.deleteMessage(deleteTarget.item.id)
+      setCloudMessages((current) =>
+        current.filter((message) => message.id !== deleteTarget.item.id),
       )
     }
     setCloudState('READY')
@@ -378,7 +388,9 @@ function MemorySite({
   const deleteTitle = deleteTarget
     ? deleteTarget.kind === 'photo'
       ? COPY.deleteTitlePhoto
-      : COPY.deleteTitleMemory
+      : deleteTarget.kind === 'memory'
+        ? COPY.deleteTitleMemory
+        : COPY.deleteTitleMessage
     : ''
 
   return (
@@ -487,8 +499,10 @@ function MemorySite({
             cloudState={cloudState}
             online={online}
             store={store}
+            deletableIds={cloudMessageIds}
             onCloudStateChange={updateCloudState}
             onAdded={handleMessageAdded}
+            onDelete={(message) => setDeleteTarget({ kind: 'message', item: message })}
             onRetryCloud={() => void refreshCloud(false)}
             onExport={() => void handleExport()}
           />

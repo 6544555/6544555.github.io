@@ -1,0 +1,20 @@
+A36 云端留言删除真实验收
+日期：2026-11-14
+环境：Tabbit Browser / 375x812 / production preview / 真实共享 Supabase 账号
+
+操作：
+1. 打开留言区并记录现有云端留言数。
+2. 新增临时留言“临时验收留言-20261114-2049”。
+3. 确认列表新增该留言并出现“移走这条”。
+4. 点击删除，确认弹层标题为“要把这条留言移走吗”。
+5. 点击“移走”，等待列表更新，再刷新页面检查。
+
+结果：
+beforeCount=1
+afterAddCount=2
+afterDeleteCount=1
+afterReloadMatchingMessages=0
+deleteButton=49x44px
+horizontalOverflow=false
+
+结论：新增、二次确认、删除、刷新后不再出现均通过；其他留言数量未受影响。

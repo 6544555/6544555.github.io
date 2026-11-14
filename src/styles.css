@@ -4407,6 +4407,25 @@ p {
   text-transform: uppercase;
 }
 
+.message-meta {
+  grid-column: 2;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.message-meta time {
+  margin-top: 0;
+}
+
+.message-delete {
+  min-height: 44px;
+  margin-left: auto;
+}
+
 .stack-field textarea {
   min-height: 156px;
   resize: vertical;

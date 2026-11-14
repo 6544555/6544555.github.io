@@ -28,6 +28,7 @@ export interface CloudStore {
   deleteMemory(id: string): Promise<void>
   listMessages(): Promise<MessageItem[]>
   addMessage(text: string): Promise<MessageItem>
+  deleteMessage(id: string): Promise<void>
   uploadPhoto(path: string, blob: Blob): Promise<string>
   getPhotoUrl(path: string, expiresIn?: number): Promise<string | null>
   exportAll(): Promise<ExportBundle>
@@ -447,6 +448,13 @@ export function createCloudStore(): CloudStore {
     return mapMessage(data as MessageRow)
   }
 
+  async function deleteMessage(id: string): Promise<void> {
+    assertOnline()
+    assertUuid(id, '留言 ID')
+    const { error } = await getClient().from('messages').delete().eq('id', id)
+    if (error) throw toCloudError(error)
+  }
+
   async function uploadPhoto(path: string, blob: Blob): Promise<string> {
     assertOnline()
     assertStoragePath(path)
@@ -556,6 +564,7 @@ export function createCloudStore(): CloudStore {
     deleteMemory,
     listMessages,
     addMessage,
+    deleteMessage,
     uploadPhoto,
     getPhotoUrl,
     exportAll,
