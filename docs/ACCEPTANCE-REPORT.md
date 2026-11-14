@@ -40,6 +40,8 @@
 | A30 | 通过 | production 375 / 768 / 1440 | 检查气球、爱心、间距和点击层 | 两枚黑白线稿气球和两枚陈玫色爱心独立成带，与标题间距 20–34px，`aria-hidden` 且不拦截操作 |
 | A31 | 通过 | Edge production 375×812 + 私有 `music` Storage | 播放默认音轨；从“换音乐”上传 WAV；刷新；恢复默认 | 上传后的 `audio.src` 为 Supabase 私有签名地址；刷新后仍读到自选音轨；“恢复默认”后重新使用 `/audio/memory-theme.wav`；迁移连续执行两次成功 |
 | A32 | 通过 | production 375 / 768 / 1440 | 核对暖米纸编辑部主题、字体、发丝线、留白、直角和响应式 | 页面底色 `#F9F8F6`、标题为衬线、正文为无衬线；375/768/1440 为 2/3/4 轨、无横向溢出；普通卡片无阴影且圆角为 0；音乐按钮 46px 高 |
+| A33 | 通过 | production 375 / 768 / 1440 | 滚动主区块并检查动态偏好 | 首屏封面层级与进入动画生效；照片区滚动后增加 `is-revealed`，透明度 `1`、位移 `0`；粘性导航位置为 `sticky`；减少动态时内容和标题线直接显示 |
+| A34 | 通过 | production 375×812 | 点击“小黑爱心雨”，检查粒子、挂载点、点击穿透和减少动态 | 生成 34 枚纯黑爱心；动画名 `heart-fall`；层挂载到 `BODY`，覆盖 360×812；`pointer-events: none` 且 `aria-hidden`；减少动态时动画为 `none`、爱心静态排列 |
 
 ## 真实 Supabase 配置
 
@@ -57,7 +59,7 @@
 ```text
 npm test          11 files / 51 tests passed
 npm run typecheck exit 0
-npm run build     exit 0, 103 modules
+npm run build     exit 0, 105 modules
 ```
 
 ## 线上发布
