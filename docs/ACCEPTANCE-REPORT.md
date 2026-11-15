@@ -9,7 +9,7 @@
 | 编号 | 结果 | 环境 | 操作 | 证据 |
 |---|---|---|---|---|
 | A1 [P0] | 通过 | Edge 157 headless / 全新 origin | 打开 4188 端口全新 origin，检查 DOM、请求、SW 与缓存 | 登录壳层 `1`、私密壳层 `0`、注册文字 `false`、私密/API 请求 `0`、SW `0`、缓存 `0`；`docs/evidence/A1-auth-fresh-origin.txt` |
-| A2 [P0] | 通过 | Edge 157 headless / production | Auth 预热完成后，从一次点击登录到 `#photos-title` 可见计时 3 次 | `1383ms / 851ms / 855ms`，均低于 2 秒；瞬时重试包含在同一次点击内，预热有硬超时；`docs/evidence/A2-A4-auth-timing.txt` |
+| A2 [P0] | 通过 | production preview 375×812 / 真实 Supabase | 登录页账号预填 `gt011120`，输入新共享密码后进入主站 | 账号 `gt011120` 经构建时环境变量映射到内部邮箱；真实登录进入 `#photos-title`，375px 无横向溢出，内部邮箱未出现在可见界面 |
 | A3 | 通过 | Edge 157 headless / 真实 Supabase | 输入错误密码 | HTTP `400`，无 access/refresh token；私密页面 `false`，显示统一重试文案 |
 | A4 [P0] | 通过 | Edge 157 headless / production | 过期会话的 refresh 延迟 `8000ms` | 公开认证壳层 `79ms` 可见；认证前私密 REST/Storage 请求 `0`；`docs/evidence/A2-A4-auth-timing.txt` |
 | A5 | 通过 | production 375 / 768 / 1440 | 检查照片列数和横向宽度 | 列数 `2 / 3 / 4`；三档均无横向溢出 |
@@ -18,7 +18,7 @@
 | A8 | 通过 | 两个独立 Edge profile；mobile production 375×812 | B 打开照片、二次确认删除、A 刷新；手机端检查删除操作栏 | 跨浏览器删除同步通过；移动端 Dialog Portal 固定在视口，操作栏 `677–739px`、删除按钮 `693–739px`，无需滚动即可操作 |
 | A9 | 未验证 | 真实 Supabase | 时光完整新增、编辑、删除 | 真实新增和读回已通过；编辑持久化未形成闭环 |
 | A10 | 未验证 | 真实 Supabase | 留言中提交脚本与换行 | 鉴权改造后尚未重跑 XSS 纯文本证据 |
-| A11 | 通过 | Vitest | `daysTogether` | 覆盖第 0 天、跨月、跨年 |
+| A11 | 通过 | Vitest + production preview | `daysTogether` 与起始日 `2025-11-17` | 起始日第 0 天、跨月、跨年测试通过；2026-11-15 页面显示第 `363` 天，与自然日差一致；页面安排午夜自动刷新计数 |
 | A12 | 未验证 | 真实空数据集 | 三处空状态 | 三块空状态存在；完整数据切换证据未归档 |
 | A13 | 未验证 | 登录后 production | ZIP 导出 | 鉴权改造后尚未重跑导出闭环 |
 | A14 | 通过 | production | 字体请求 | 系统中文字体回退，无第三方字体请求 |
@@ -60,7 +60,7 @@
 ## 最新门禁
 
 ```text
-npm test          12 files / 58 tests passed
+npm test          12 files / 60 tests passed
 npm run typecheck exit 0
 npm run build     exit 0, 106 modules
 ```

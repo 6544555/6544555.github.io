@@ -4,7 +4,22 @@ import { getClient } from './supabase'
 import type { AuthReason, AuthState, AuthUser } from '../types'
 
 const AUTHENTICATED_USER_CACHE_KEY = 'bday:v2:authenticated-user'
+export const SHARED_LOGIN_USERNAME = 'gt011120'
 let authWarmPromise: Promise<void> | null = null
+
+export function isLoginIdentifier(value: string): boolean {
+  const normalized = value.trim().toLowerCase()
+  return (
+    normalized === SHARED_LOGIN_USERNAME ||
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized)
+  )
+}
+
+export function resolveLoginEmail(value: string): string {
+  const normalized = value.trim()
+  if (normalized.toLowerCase() !== SHARED_LOGIN_USERNAME) return normalized
+  return import.meta.env.VITE_SHARED_LOGIN_EMAIL?.trim() || normalized
+}
 
 interface ErrorLike {
   message?: string
@@ -141,7 +156,7 @@ export async function restoreSession(): Promise<AuthState> {
   }
 }
 
-export async function signIn(email: string, password: string): Promise<AuthState> {
+export async function signIn(account: string, password: string): Promise<AuthState> {
   if (isOffline()) return { status: 'DEGRADED', reason: 'CLIENT_OFFLINE' }
 
   const startedAt = Date.now()
@@ -150,7 +165,7 @@ export async function signIn(email: string, password: string): Promise<AuthState
   for (let attempt = 0; attempt < 10; attempt += 1) {
     try {
       const { data, error } = await getClient().auth.signInWithPassword({
-        email: email.trim(),
+        email: resolveLoginEmail(account),
         password,
       })
       if (!error) return stateForSession(data.session)

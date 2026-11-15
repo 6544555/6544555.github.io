@@ -215,3 +215,26 @@ S1 设计采用奶油色纸张、杏色卡片、Lotus 红色强调与香槟色�
 ### 回滚
 
 移除相片库入口与弹层，并删除 `frame-*`、`photo-square`、`photo-tall` 和 `photo-library-*` 样式即可回到单一编排列版本；Supabase 数据不受影响。
+
+---
+
+## 变更 9：前端共享账号别名与纪念起始日
+
+日期：2026-11-15
+提出：用户
+范围：`auth.ts`、`Gate.tsx`、`copy.ts`、`defaultContent.ts`、`public/content.json`、Pages workflow、环境示例与验收文档。
+
+### 原因
+
+用户希望通过统一账号 `gt011120` 登录，不再让使用者看到或输入内部 Supabase 邮箱；同时将纪念起始日固定为 `2025-11-17`，让天数随时间自动递增。
+
+### 新行为
+
+1. 登录页只显示账号与密码；账号默认填入 `gt011120`，输入类型与自动填充改为 username。
+2. `gt011120` 在构建时通过 `VITE_SHARED_LOGIN_EMAIL` 映射到内部 Supabase 邮箱，明文密码和内部邮箱都不写入源码。
+3. Pages 构建从现有 `SUPABASE_SHARED_EMAIL` Secret 注入映射；keepalive 的密码 Secret 与 Supabase Auth 密码保持同步。
+4. 起始日固定为 `2025-11-17`；起始日第 0 天，之后按本地自然日递增，页面跨午夜后自动重新计算。
+
+### 回滚
+
+移除账号别名映射并恢复邮箱输入框即可回到直接邮箱登录；恢复旧起始日只改 `defaultContent.ts` 与 `public/content.json`。Auth 用户与密码不因回滚自动变化。

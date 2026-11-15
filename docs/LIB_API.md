@@ -221,12 +221,12 @@
 建议 UI：只有 `AUTHENTICATED` 才挂载主站和请求私密数据。  
 示例：`const state = await restoreSession()`
 
-### `signIn(email, password): Promise<AuthState>`
-说明：使用唯一共享账号调用 `signInWithPassword`；前端不比较固定账号或密码。  
-参数：邮箱去首尾空格；密码保持原值。  
-返回：成功为 `AUTHENTICATED`；错误凭据为 `SIGNED_OUT / INVALID_CREDENTIALS`；网络问题为 `DEGRADED`。  
-建议 UI：错误信息保持统一，不显示技术响应或账号是否存在。  
-示例：`const result = await signIn(email, password)`
+### `signIn(account, password): Promise<AuthState>`
+说明：前端共享账号 `gt011120` 通过 `VITE_SHARED_LOGIN_EMAIL` 映射为内部 Supabase 邮箱，再调用 `signInWithPassword`；前端不比较明文密码。
+参数：账号去首尾空格；密码保持原值。
+返回：成功为 `AUTHENTICATED`；错误凭据为 `SIGNED_OUT / INVALID_CREDENTIALS`；网络问题为 `DEGRADED`。
+建议 UI：错误信息保持统一，不显示技术响应、内部邮箱或账号是否存在。
+示例：`const result = await signIn('gt011120', password)`
 
 ### `signOut(): Promise<void>`
 说明：调用 Supabase Auth 本地退出，并清除文本快照和已认证用户标记。  

@@ -4,7 +4,7 @@ import type { ContentBundle } from './types'
 export const DEFAULT_CONTENT: ContentBundle = {
   site: {
     herName: '纪念册',
-    startDate: '',
+    startDate: '2025-11-17',
     openingLine: '把日子放在这里',
     passHint: '',
   },

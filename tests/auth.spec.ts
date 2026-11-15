@@ -137,6 +137,25 @@ describe('single-account Supabase Auth', () => {
     expect(mocks.auth.signInWithPassword).toHaveBeenCalledTimes(2)
   })
 
+  it('maps the public shared username to the configured Supabase email', async () => {
+    vi.stubEnv('VITE_SHARED_LOGIN_EMAIL', 'internal-shared@example.invalid')
+    mocks.auth.signInWithPassword.mockResolvedValue({
+      data: { user, session },
+      error: null,
+    })
+
+    const auth = await loadAuth()
+    expect(auth.isLoginIdentifier('gt011120')).toBe(true)
+    expect(auth.resolveLoginEmail('gt011120')).toBe('internal-shared@example.invalid')
+    await expect(auth.signIn('gt011120', 'correct')).resolves.toMatchObject({
+      status: 'AUTHENTICATED',
+    })
+    expect(mocks.auth.signInWithPassword).toHaveBeenCalledWith({
+      email: 'internal-shared@example.invalid',
+      password: 'correct',
+    })
+  })
+
   it('maps wrong credentials to a signed-out mismatch state', async () => {
     mocks.auth.signInWithPassword.mockResolvedValue({
       data: { user: null, session: null },

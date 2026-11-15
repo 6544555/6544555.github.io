@@ -5,6 +5,7 @@ import {
   mergeContent,
   sortMemories,
 } from '../src/lib/content'
+import { DEFAULT_CONTENT } from '../src/defaultContent'
 import type { ContentBundle, MemoryItem, MessageItem, PhotoItem } from '../src/types'
 
 const staticBundle: ContentBundle = {
@@ -107,6 +108,12 @@ describe('content helpers', () => {
     expect(daysTogether('2024-07-12', new Date(2024, 6, 12, 23, 59))).toBe(0)
     expect(daysTogether('2024-07-12', new Date(2024, 7, 20))).toBe(39)
     expect(daysTogether('2023-12-31', new Date(2024, 0, 2))).toBe(2)
+  })
+
+  it('starts the default day counter on 2025-11-17', () => {
+    expect(DEFAULT_CONTENT.site.startDate).toBe('2025-11-17')
+    expect(daysTogether(DEFAULT_CONTENT.site.startDate, new Date(2025, 10, 18))).toBe(1)
+    expect(daysTogether(DEFAULT_CONTENT.site.startDate, new Date(2025, 11, 17))).toBe(30)
   })
 
   it('returns an empty marked bundle when static content is unavailable', async () => {

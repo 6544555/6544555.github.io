@@ -1,28 +1,32 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { COPY } from '../copy'
 import type { AuthReason, AuthState } from '../types'
-import { warmAuthConnection } from '../lib/auth'
+import {
+  isLoginIdentifier,
+  SHARED_LOGIN_USERNAME,
+  warmAuthConnection,
+} from '../lib/auth'
 import { authReasonMessage } from './authViewModel'
 
 interface GateProps {
   reason?: AuthReason
-  onSignIn: (email: string, password: string) => Promise<AuthState>
+  onSignIn: (account: string, password: string) => Promise<AuthState>
 }
 
 export function Gate({ reason, onSignIn }: GateProps) {
-  const [email, setEmail] = useState('')
+  const [account, setAccount] = useState(SHARED_LOGIN_USERNAME)
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState(() => authReasonMessage(reason))
   const [busy, setBusy] = useState(false)
   const [connectionReady, setConnectionReady] = useState(false)
-  const emailRef = useRef<HTMLInputElement>(null)
+  const accountRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     let active = true
     void warmAuthConnection().finally(() => {
       if (active) {
         setConnectionReady(true)
-        emailRef.current?.focus()
+        accountRef.current?.focus()
       }
     })
     return () => {
@@ -33,20 +37,20 @@ export function Gate({ reason, onSignIn }: GateProps) {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (busy || !connectionReady) return
-    if (!email.trim() || !password) {
+    if (!account.trim() || !password) {
       setMessage(COPY.gateMismatch)
       return
     }
-    if (emailRef.current && !emailRef.current.validity.valid) {
-      setMessage(COPY.gateEmailInvalid)
-      emailRef.current.focus()
+    if (!isLoginIdentifier(account)) {
+      setMessage(COPY.gateAccountInvalid)
+      accountRef.current?.focus()
       return
     }
 
     setBusy(true)
     setMessage('')
     try {
-      const result = await onSignIn(email.trim(), password)
+      const result = await onSignIn(account.trim(), password)
       if (result.status === 'SIGNED_OUT' || result.status === 'DEGRADED') {
         setMessage(authReasonMessage(result.reason))
       }
@@ -71,20 +75,21 @@ export function Gate({ reason, onSignIn }: GateProps) {
           <label className="line-field">
             <span>{COPY.gateAccount}</span>
             <input
-              ref={emailRef}
-              type="email"
-              inputMode="email"
-              autoComplete="email"
+              ref={accountRef}
+              type="text"
+              inputMode="text"
+              autoComplete="username"
               autoCapitalize="none"
               autoCorrect="off"
               spellCheck={false}
-              value={email}
+              placeholder={SHARED_LOGIN_USERNAME}
+              value={account}
               onChange={(event) => {
-                setEmail(event.target.value)
+                setAccount(event.target.value)
                 if (message) setMessage('')
               }}
               aria-describedby="auth-message"
-              aria-invalid={message === COPY.gateEmailInvalid}
+              aria-invalid={message === COPY.gateAccountInvalid}
               disabled={busy || !connectionReady}
             />
           </label>

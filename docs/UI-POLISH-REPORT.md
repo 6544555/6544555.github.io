@@ -103,9 +103,9 @@
 
 ## 9. 登录表单反馈
 
-- 登录表单使用 `noValidate`，不再出现浏览器原生邮箱校验浮泡。
-- 邮箱格式不完整时，在字段下方显示陈玫色编辑式注记“邮箱格式不完整，请再检查一下”，并在输入变化时清除旧提示。
-- 邮箱仍使用 `type="email"`、`inputMode="email"` 和 `autoComplete="email"`；密码管理器与移动端邮箱键盘不受影响。
+- 登录表单使用 `noValidate`，不再出现浏览器原生校验浮泡。
+- 登录页预填前端账号 `gt011120`，账号格式不完整时显示陈玫色编辑式注记，并在输入变化时清除旧提示。
+- 账号输入使用 `type="text"`、`autoComplete="username"`；`gt011120` 只在构建时通过 `VITE_SHARED_LOGIN_EMAIL` 映射到内部 Supabase 邮箱，可见界面不展示该邮箱。
 - 登录输入框聚焦时不再出现整圈黑色矩形，只显示墨色底线、内嵌 1px 焦点线和浅纸色底；标签同步转为墨色。
 - 375px 实测注记颜色为 `rgb(129, 109, 112)`，前置线宽 20px，无边框浮层，输入框高 44px，页面无横向溢出；聚焦轮廓为 `0px/none`。
 - 截图：[登录输入焦点 375px](evidence/login-focus-375.png)
@@ -144,7 +144,7 @@
 ## 12. 门禁
 
 ```text
-npm test          12 files / 58 tests passed
+npm test          12 files / 60 tests passed
 npm run typecheck exit 0
 npm run build     exit 0，106 modules
 ```

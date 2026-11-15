@@ -163,6 +163,29 @@ function MemorySite({
   const [showIntro, setShowIntro] = useState(
     () => !introHasPlayed() && !prefersReducedMotion(),
   )
+  const [, setDayTick] = useState(0)
+
+  useEffect(() => {
+    let timer: number | undefined
+
+    const scheduleNextDay = () => {
+      const now = new Date()
+      const nextDay = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1,
+      )
+      timer = window.setTimeout(() => {
+        setDayTick((tick) => tick + 1)
+        scheduleNextDay()
+      }, nextDay.getTime() - now.getTime() + 1_000)
+    }
+
+    scheduleNextDay()
+    return () => {
+      if (timer !== undefined) window.clearTimeout(timer)
+    }
+  }, [])
 
   useEffect(
     () => () => {
