@@ -34,6 +34,14 @@ describe('background music configuration', () => {
       extension: 'm4a',
       mimeType: 'audio/mp4',
     })
+    expect(musicFileInfo('theme.FLAC', 'audio/x-flac')).toEqual({
+      extension: 'flac',
+      mimeType: 'audio/flac',
+    })
+    expect(musicFileInfo('theme.flac', '')).toEqual({
+      extension: 'flac',
+      mimeType: 'audio/flac',
+    })
   })
 
   it('rejects mismatched or unsupported music files', () => {

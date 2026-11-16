@@ -213,7 +213,7 @@ export function BackgroundMusic() {
               ref={inputRef}
               className="visually-hidden"
               type="file"
-              accept=".mp3,.wav,.m4a,audio/mpeg,audio/wav,audio/mp4"
+              accept=".mp3,.flac,.wav,.m4a,audio/mpeg,audio/flac,audio/x-flac,audio/wav,audio/mp4"
               tabIndex={-1}
               onChange={(event) => void handleFile(event.target.files?.[0])}
             />

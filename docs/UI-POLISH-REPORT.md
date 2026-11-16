@@ -26,7 +26,7 @@
 
 - 默认音频：`public/audio/memory-theme.wav`，1,469,070 bytes，WAV PCM，33.31 秒。
 - 音乐播放与“换音乐”按钮位于 `masthead-actions`，均保持 44px 以上；播放时显示三条均衡器短线。
-- 登录后可从本机上传 16MB 内的 MP3、WAV 或 M4A 到 Supabase 私有 `music` 桶。
+- 登录后可从本机上传 16MB 内的 MP3、FLAC、WAV 或 M4A 到 Supabase 私有 `music` 桶。
 - 真实回归：上传 MP3 后音频源切换到 Supabase 私有签名地址，刷新后仍读取自选音轨，恢复默认后重新使用打包音轨并清理自选文件。
 - 不强制首次自动播放；减少动效时关闭均衡器动画。
 
