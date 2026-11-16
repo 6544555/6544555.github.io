@@ -119,7 +119,7 @@ export function BackgroundMusic() {
     if (!file || busy) return
 
     setBusy(true)
-    setMessage(COPY.musicUploading)
+    setMessage(file.size > 5 * 1024 * 1024 ? COPY.musicUploadingLarge : COPY.musicUploading)
     try {
       const track = await uploadCustomMusic(file)
       autoPlayRequestedRef.current = true

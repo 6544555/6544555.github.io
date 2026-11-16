@@ -26,6 +26,7 @@ export const COPY = {
   musicDefaultTrack: '当前使用默认音轨',
   musicCustomTrack: '当前使用自选音轨',
   musicUploading: '正在上传音乐',
+  musicUploadingLarge: '文件较大，正在上传，请保持页面打开',
   musicUploadSuccess: '音乐已经换好',
   musicReset: '恢复默认',
   musicResetSuccess: '已恢复默认音乐',

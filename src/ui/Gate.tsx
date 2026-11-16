@@ -1,11 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { COPY } from '../copy'
 import type { AuthReason, AuthState } from '../types'
-import {
-  isLoginIdentifier,
-  SHARED_LOGIN_USERNAME,
-  warmAuthConnection,
-} from '../lib/auth'
+import { isLoginIdentifier, warmAuthConnection } from '../lib/auth'
 import { authReasonMessage } from './authViewModel'
 
 interface GateProps {
@@ -14,7 +10,7 @@ interface GateProps {
 }
 
 export function Gate({ reason, onSignIn }: GateProps) {
-  const [account, setAccount] = useState(SHARED_LOGIN_USERNAME)
+  const [account, setAccount] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState(() => authReasonMessage(reason))
   const [busy, setBusy] = useState(false)
@@ -78,11 +74,11 @@ export function Gate({ reason, onSignIn }: GateProps) {
               ref={accountRef}
               type="text"
               inputMode="text"
-              autoComplete="username"
+              autoComplete="off"
               autoCapitalize="none"
               autoCorrect="off"
               spellCheck={false}
-              placeholder={SHARED_LOGIN_USERNAME}
+              placeholder=""
               value={account}
               onChange={(event) => {
                 setAccount(event.target.value)

@@ -9,7 +9,7 @@
 | 编号 | 结果 | 环境 | 操作 | 证据 |
 |---|---|---|---|---|
 | A1 [P0] | 通过 | Edge 157 headless / 全新 origin | 打开 4188 端口全新 origin，检查 DOM、请求、SW 与缓存 | 登录壳层 `1`、私密壳层 `0`、注册文字 `false`、私密/API 请求 `0`、SW `0`、缓存 `0`；`docs/evidence/A1-auth-fresh-origin.txt` |
-| A2 [P0] | 通过 | production preview 375×812 / 真实 Supabase | 登录页账号预填 `gt011120`，输入新共享密码后进入主站 | 账号 `gt011120` 经构建时环境变量映射到内部邮箱；真实登录进入 `#photos-title`，375px 无横向溢出，内部邮箱未出现在可见界面 |
+| A2 [P0] | 通过 | production preview 375×812 / 真实 Supabase | 登录页账号输入框为空，输入共享账号与新密码后进入主站 | 账号经构建时环境变量映射到内部邮箱；真实登录进入 `#photos-title`，375px 无横向溢出，内部邮箱与账号提示未出现在可见界面 |
 | A3 | 通过 | Edge 157 headless / 真实 Supabase | 输入错误密码 | HTTP `400`，无 access/refresh token；私密页面 `false`，显示统一重试文案 |
 | A4 [P0] | 通过 | Edge 157 headless / production | 过期会话的 refresh 延迟 `8000ms` | 公开认证壳层 `79ms` 可见；认证前私密 REST/Storage 请求 `0`；`docs/evidence/A2-A4-auth-timing.txt` |
 | A5 | 通过 | production 375 / 768 / 1440 | 检查照片列数和横向宽度 | 列数 `2 / 3 / 4`；三档均无横向溢出 |
