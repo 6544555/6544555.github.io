@@ -141,15 +141,24 @@
 
 截图：[混合相框 1440px](evidence/photo-frames-1440.png)、[相片库 1440px](evidence/photo-library-1440.png)
 
-## 12. 门禁
+## 12. v12 相识时间实时秒表
+
+- 首屏原静态题句替换为实时计时器，显示“相识至今 N 天 HH:MM:SS”。
+- 完整起始时间来自 `startAt: 2025-11-17T00:00:00+08:00`，按绝对时间计算；旧内容缺少 `startAt` 时回退到 `startDate` 的当天零点。
+- 计时器每秒更新，使用等宽数字与衬线大号数字；`role="timer"` 且 `aria-live="off"`，不会让读屏器每秒播报。
+- 375px 实测两次读取相差 2 秒，总秒数从 `31495314` 增至 `31495316`，页面无横向溢出。
+
+截图：[相识实时计时器 375px](evidence/relationship-clock-375.png)
+
+## 13. 门禁
 
 ```text
-npm test          12 files / 60 tests passed
+npm test          12 files / 61 tests passed
 npm run typecheck exit 0
-npm run build     exit 0，106 modules
+npm run build     exit 0，107 modules
 ```
 
-## 13. 未验证与限制
+## 14. 未验证与限制
 
 - 真实私密照片数量取决于 Supabase 数据；本次截图使用当前空数据状态。
 - 音乐资源能够播放，但未在真实手机上验证扬声器音量和系统媒体控制。

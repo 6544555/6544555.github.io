@@ -42,6 +42,7 @@ import {
 } from './ui/helpers'
 import { Messages } from './ui/Messages'
 import { PhotoWall } from './ui/PhotoWall'
+import { RelationshipClock } from './ui/RelationshipClock'
 import { Timeline } from './ui/Timeline'
 import { useRevealSections } from './ui/useRevealSections'
 import './styles.css'
@@ -444,7 +445,10 @@ function MemorySite({
           <div className="masthead">
             <div className="masthead-copy">
               <p className="site-name">{content.site.herName}</p>
-              <p className="opening-line">{content.site.openingLine}</p>
+              <RelationshipClock
+                startAt={content.site.startAt}
+                startDate={content.site.startDate}
+              />
               <p className="masthead-deck">{COPY.heroDeck}</p>
               <div className="hero-actions">
                 <a className="primary-button hero-primary" href="#photos">

@@ -9,6 +9,7 @@ import type {
 const EMPTY_SITE: SiteInfo = {
   herName: '',
   startDate: '',
+  startAt: '',
   openingLine: '',
   passHint: '',
 }
@@ -30,9 +31,18 @@ function isObject(value: unknown): value is Record<string, unknown> {
 function normalizeSite(value: unknown): SiteInfo {
   if (!isObject(value)) return { ...EMPTY_SITE }
 
+  const startDate = typeof value.startDate === 'string' ? value.startDate : ''
+  const startAt =
+    typeof value.startAt === 'string'
+      ? value.startAt
+      : startDate
+        ? `${startDate}T00:00:00+08:00`
+        : ''
+
   return {
     herName: typeof value.herName === 'string' ? value.herName : '',
-    startDate: typeof value.startDate === 'string' ? value.startDate : '',
+    startDate,
+    startAt,
     openingLine: typeof value.openingLine === 'string' ? value.openingLine : '',
     passHint: typeof value.passHint === 'string' ? value.passHint : '',
   }
@@ -153,4 +163,26 @@ export function daysTogether(startDate: string, now = new Date()): number {
   const startUtc = Date.UTC(start[0], start[1] - 1, start[2])
   const currentUtc = Date.UTC(current[0], current[1] - 1, current[2])
   return Math.floor((currentUtc - startUtc) / 86_400_000)
+}
+
+export interface ElapsedTime {
+  days: number
+  hours: number
+  minutes: number
+  seconds: number
+  totalSeconds: number
+}
+
+export function elapsedSince(startAt: string, now = new Date()): ElapsedTime | null {
+  const start = new Date(startAt)
+  const totalSeconds = Math.floor((now.getTime() - start.getTime()) / 1_000)
+  if (!Number.isFinite(totalSeconds) || totalSeconds < 0) return null
+
+  return {
+    days: Math.floor(totalSeconds / 86_400),
+    hours: Math.floor((totalSeconds % 86_400) / 3_600),
+    minutes: Math.floor((totalSeconds % 3_600) / 60),
+    seconds: totalSeconds % 60,
+    totalSeconds,
+  }
 }

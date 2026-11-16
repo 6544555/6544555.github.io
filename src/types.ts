@@ -23,6 +23,7 @@ export type AuthState =
 export interface SiteInfo {
   herName: string
   startDate: IsoDate
+  startAt?: IsoDateTime
   openingLine: string
   passHint: string
 }

@@ -5218,6 +5218,125 @@ p {
   }
 }
 
+/* Relationship clock replaces the static hero line. */
+.relationship-clock {
+  width: 100%;
+  max-width: none;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: end;
+  justify-content: start;
+  gap: 10px 20px;
+  margin-bottom: 32px;
+  font-family: var(--font-serif);
+  font-variant-numeric: tabular-nums;
+}
+
+.relationship-clock-label,
+.relationship-clock-start {
+  grid-column: 1 / -1;
+  color: var(--graphite);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.relationship-clock-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.relationship-clock-label::before {
+  width: 32px;
+  height: 1px;
+  background: var(--ink);
+  content: "";
+}
+
+.relationship-clock-days {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.relationship-clock-days strong {
+  font-size: clamp(52px, 7.2vw, 88px);
+  font-weight: 400;
+  line-height: 0.9;
+}
+
+.relationship-clock-days > span {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.relationship-clock-time {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  padding-left: 20px;
+  border-left: 1px solid var(--rule-40);
+  color: var(--ink);
+  font-size: clamp(22px, 3.6vw, 42px);
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.relationship-clock-time span:nth-child(even) {
+  color: var(--graphite);
+  font-size: 0.6em;
+}
+
+.relationship-clock-start {
+  margin-top: 2px;
+}
+
+.relationship-clock-unavailable {
+  color: var(--graphite);
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.2;
+}
+
+@media (max-width: 767px) {
+  .relationship-clock {
+    column-gap: 14px;
+  }
+
+  .relationship-clock-days strong {
+    font-size: clamp(48px, 14vw, 64px);
+  }
+
+  .relationship-clock-time {
+    gap: 2px;
+    padding-left: 14px;
+    font-size: clamp(19px, 5.6vw, 26px);
+  }
+}
+
+@media (max-width: 420px) {
+  .relationship-clock {
+    width: calc(100vw - 40px);
+    max-width: calc(100vw - 40px);
+  }
+
+  .relationship-clock-days > span {
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .relationship-clock {
+    animation: none;
+  }
+}
+
 /* Lower-page vital trace, v9. */
 .heartbeat-divider {
   width: min(100% - 48px, 1200px);

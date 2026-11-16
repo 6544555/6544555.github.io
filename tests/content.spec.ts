@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   daysTogether,
+  elapsedSince,
   loadStaticContent,
   mergeContent,
   sortMemories,
@@ -112,8 +113,30 @@ describe('content helpers', () => {
 
   it('starts the default day counter on 2025-11-17', () => {
     expect(DEFAULT_CONTENT.site.startDate).toBe('2025-11-17')
+    expect(DEFAULT_CONTENT.site.startAt).toBe('2025-11-17T00:00:00+08:00')
     expect(daysTogether(DEFAULT_CONTENT.site.startDate, new Date(2025, 10, 18))).toBe(1)
     expect(daysTogether(DEFAULT_CONTENT.site.startDate, new Date(2025, 11, 17))).toBe(30)
+  })
+
+  it('computes the relationship duration down to seconds', () => {
+    expect(
+      elapsedSince(
+        '2025-11-17T00:00:00+08:00',
+        new Date('2025-11-18T01:02:03+08:00'),
+      ),
+    ).toEqual({
+      days: 1,
+      hours: 1,
+      minutes: 2,
+      seconds: 3,
+      totalSeconds: 90_123,
+    })
+    expect(
+      elapsedSince(
+        '2025-11-17T00:00:00+08:00',
+        new Date('2025-11-16T23:59:59+08:00'),
+      ),
+    ).toBeNull()
   })
 
   it('returns an empty marked bundle when static content is unavailable', async () => {
