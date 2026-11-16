@@ -246,7 +246,7 @@
 
 ### `musicFileInfo(filename, mimeType): MusicFileInfo | null`
 说明：校验扩展名与 MIME，返回标准扩展名和上传 MIME。
-参数：文件名与浏览器 `File.type`；支持 MP3、WAV、M4A。
+参数：文件名与浏览器 `File.type`；支持 MP3、FLAC、WAV、M4A。
 返回：`{ extension, mimeType }` 或 `null`。
 建议 UI：不支持的格式只在音乐设置层提示。
 示例：`musicFileInfo('theme.mp3', 'audio/mpeg')`
@@ -257,9 +257,9 @@
 返回：自选音轨或 `null`；无音轨时 UI 使用打包默认音轨。
 建议 UI：加载失败时静默回退默认音轨，不阻塞主站。
 
-### `uploadCustomMusic(file): Promise<StoredMusicTrack>`
-说明：验证 16MB 上限和格式，上传到 `music/theme/background.<ext>`，清理其他自选音轨并返回签名 URL。
-参数：浏览器 `File`。
+### `uploadCustomMusic(file, onProgress?): Promise<StoredMusicTrack>`
+说明：验证 16MB 上限和格式，超过 1MB 的文件使用 512KB 分片续传到 `music/theme/background.<ext>`，清理其他自选音轨并返回签名 URL。
+参数：浏览器 `File`，可选进度回调。
 可能抛：`InputError` 或 `CloudError`。
 建议 UI：上传期间禁用重复选择；成功后切换到新音轨并清理输入值。
 

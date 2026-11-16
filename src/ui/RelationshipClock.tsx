@@ -72,7 +72,7 @@ export function RelationshipClock({
       aria-label={label}
       data-total-seconds={elapsed.totalSeconds}
     >
-      <span className="relationship-clock-label">相识至今</span>
+      <span className="relationship-clock-label">至今</span>
       <span className="relationship-clock-days">
         <strong>{elapsed.days}</strong>
         <span>天</span>

@@ -121,7 +121,9 @@ export function BackgroundMusic() {
     setBusy(true)
     setMessage(file.size > 5 * 1024 * 1024 ? COPY.musicUploadingLarge : COPY.musicUploading)
     try {
-      const track = await uploadCustomMusic(file)
+      const track = await uploadCustomMusic(file, (percent) => {
+        setMessage(COPY.musicUploadingProgress(percent))
+      })
       autoPlayRequestedRef.current = true
       setCustomTrack(true)
       setSrc(track.url)

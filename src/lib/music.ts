@@ -1,3 +1,4 @@
+import { Upload } from 'tus-js-client'
 import { MAX_MUSIC_BYTES, MUSIC_BUCKET } from '../config'
 import { CloudError, InputError } from '../types'
 import { getClient } from './supabase'
@@ -154,11 +155,73 @@ async function removeOtherTracks(keepPath: string): Promise<void> {
   if (error) throw toCloudError(error)
 }
 
-export async function uploadCustomMusic(file: File): Promise<StoredMusicTrack> {
+async function uploadResumable(
+  payload: Blob,
+  path: string,
+  mimeType: string,
+  onProgress?: (percent: number) => void,
+): Promise<void> {
+  const baseUrl = import.meta.env.VITE_SUPABASE_URL?.trim()
+  const { data, error } = await getClient().auth.getSession()
+  if (!baseUrl || error || !data.session) {
+    throw new CloudError('DEGRADED', 'CLOUD_UNAVAILABLE', '音乐上传需要重新登录')
+  }
+
+  await new Promise<void>((resolve, reject) => {
+    const upload = new Upload(payload, {
+      endpoint: `${baseUrl.replace(/\/$/, '')}/storage/v1/upload/resumable`,
+      headers: {
+        authorization: `Bearer ${data.session.access_token}`,
+        'x-upsert': 'true',
+      },
+      metadata: {
+        bucketName: MUSIC_BUCKET,
+        objectName: path,
+        contentType: mimeType,
+        cacheControl: '3600',
+      },
+      uploadDataDuringCreation: true,
+      removeFingerprintOnSuccess: true,
+      chunkSize: 512 * 1024,
+      retryDelays: [0, 1_000, 3_000, 5_000],
+      onProgress: (sent, total) => {
+        if (total > 0 && onProgress) {
+          onProgress(Math.min(100, Math.round((sent / total) * 100)))
+        }
+      },
+      onSuccess: () => resolve(),
+      onError: (uploadError) => reject(uploadError),
+    })
+    upload.start()
+  })
+}
+
+export async function uploadCustomMusic(
+  file: File,
+  onProgress?: (percent: number) => void,
+): Promise<StoredMusicTrack> {
   const info = assertMusicFile(file)
   const path = `${MUSIC_PREFIX}/background.${info.extension}`
   const payload = file.type === info.mimeType ? file : new Blob([file], { type: info.mimeType })
   let lastError: unknown
+
+  if (payload.size > 1_000_000) {
+    try {
+      await uploadResumable(payload, path, info.mimeType, onProgress)
+      try {
+        await removeOtherTracks(path)
+      } catch {
+        // The newly uploaded track remains usable if old-track cleanup is delayed.
+      }
+      return {
+        path,
+        url: await signTrack(path),
+        ...info,
+      }
+    } catch (error) {
+      throw toCloudError(error)
+    }
+  }
 
   for (let attempt = 0; attempt < 3; attempt += 1) {
     const { error } = await getClient()
