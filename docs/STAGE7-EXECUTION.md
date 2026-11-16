@@ -1,7 +1,7 @@
 # 阶段 7：单账号与共享空间真实联调记录
 
 日期：2026-11-14  
-环境：Windows；Microsoft Edge `157.0.4341.46` headless；Playwright 1.62.1；production preview `http://127.0.0.1:4174/birthday-memory/`。  
+环境：Windows；Microsoft Edge `157.0.4341.46` headless；Playwright 1.62.1；production preview `http://127.0.0.1:4174/恋爱日志/`。
 账号：唯一共享 Supabase Auth 账号；凭据只从安全环境变量读取，未写入文档、命令输出或 Git。
 
 ## 1. 自动化入口

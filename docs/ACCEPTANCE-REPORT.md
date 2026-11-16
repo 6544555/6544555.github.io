@@ -1,10 +1,10 @@
 # 验收报告 A1–A28
 
 日期：2026-11-14  
-环境：Windows；Node `v26.13.0`；Vite `7.3.8`；Microsoft Edge `157.0.4341.46`；Playwright `1.62.1`；production preview `http://127.0.0.1:4174/birthday-memory/`。  
+环境：Windows；Node `v26.13.0`；Vite `7.3.8`；Microsoft Edge `157.0.4341.46`；Playwright `1.62.1`；production preview `http://127.0.0.1:4174/恋爱日志/`。
 权限模型：Supabase Auth 关闭公开注册，只保留一个共享邮箱密码账号；匿名只看到公开登录入口。
 
-结论：**交付完成**。单账号 Auth、匿名 RLS/Storage 拒绝、唯一账号跨浏览器读写、登录后离线、非均匀照片编排、庆祝点缀、可上传且跨会话保留的自定义背景音乐、响应式和本地门禁已通过；GitHub Pages 与 keepalive 工作流也已真实运行成功。线上地址：https://6544555.github.io/birthday-memory/。
+结论：**交付完成**。单账号 Auth、匿名 RLS/Storage 拒绝、唯一账号跨浏览器读写、登录后离线、非均匀照片编排、庆祝点缀、可上传且跨会话保留的自定义背景音乐、响应式和本地门禁已通过；GitHub Pages 与 keepalive 工作流也已真实运行成功。线上地址：https://6544555.github.io/恋爱日志/。
 
 | 编号 | 结果 | 环境 | 操作 | 证据 |
 |---|---|---|---|---|
@@ -68,7 +68,7 @@ npm run build     exit 0, 106 modules
 
 ## 线上发布
 
-- GitHub Pages：https://6544555.github.io/birthday-memory/
+- GitHub Pages：https://6544555.github.io/恋爱日志/
 - Pages 部署 run #2：成功
 - Keepalive run #1：成功，Auth `200`、REST `200`
 - 远端 `main`：`ce3afb2ef3669f636acdbc000abb08288eaeb1cf`

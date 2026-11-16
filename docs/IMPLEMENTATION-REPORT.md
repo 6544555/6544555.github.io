@@ -50,9 +50,9 @@
 ## 4. 构建、离线与预览
 
 - `scripts/build.mjs` 将 `TEMP/TMP` 指向项目内 `.build-tmp`，规避 Windows 系统临时目录上的 esbuild 删除竞争。
-- `scripts/serve-preview.mjs` 以 `/birthday-memory/` 子路径正确服务 `dist`，模拟 GitHub Pages。
+- `scripts/serve-preview.mjs` 以 `/恋爱日志/` 子路径服务 `dist/恋爱日志`，模拟 GitHub 用户主页下的 Pages 子目录。
 - Service Worker 只在 Supabase Auth 登录后的主站注册，匿名登录页不安装 Service Worker。
-- `public/sw.js` 缓存名 `birthday-memory-static-v4`；只缓存公开 shell，明确绕过 `content.json`、`/memories/` 和跨域 Supabase 请求。
+- `public/sw.js` 缓存名 `love-journal-static-v5`；只缓存公开 shell，明确绕过 `content.json`、`/memories/` 和跨域 Supabase 请求。
 - Service Worker 不缓存 REST 响应、签名 URL、照片 Blob 或云端响应。
 - 最新构建：103 modules；主 JS `504.77 kB`，`jszip` `97.47 kB`，CSS `48.69 kB`。
 

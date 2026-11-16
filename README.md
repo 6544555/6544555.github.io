@@ -1,4 +1,4 @@
-# birthday-memory
+# 恋爱日志
 
 一个采用公开壳层优先、Supabase Auth、云端增量同步和离线只读降级的私人生日纪念网站。
 
@@ -8,7 +8,7 @@
 - 公开注册关闭；匿名访客只看到登录入口，私密内容只从 authenticated RLS/Storage 读取。
 - 六种云端聚合状态：`LOADING / READY / DEGRADED / PAUSED / QUOTA / OFFLINE`。
 - 静态构建只包含公开壳层，真实内容替换与账号设置见 `docs/REPLACEMENT_CHECKLIST.md`。
-- 已发布到 https://6544555.github.io/birthday-memory/。
+- 已发布到 https://6544555.github.io/恋爱日志/。
 - GitHub Pages 部署与 Supabase keepalive 均已真实运行成功。
 - 管理密钥不进入浏览器。浏览器只使用 Supabase URL 和 anon key。
 
@@ -29,13 +29,13 @@ npm run typecheck
 npm run build
 ```
 
-构建产物位于 `dist/`。Vite 的 build base 固定为 `/birthday-memory/`，与默认 GitHub 仓库名一致。构建后可运行：
+构建产物位于 `dist/恋爱日志/`，并生成根目录跳转页。Vite 的 build base 固定为 `/恋爱日志/`，对应用户主页下的中文子目录。构建后可运行：
 
 ```powershell
 npm run preview
 ```
 
-然后访问 `http://127.0.0.1:4174/birthday-memory/`。
+然后访问 `http://127.0.0.1:4174/恋爱日志/`。
 
 ## Supabase
 

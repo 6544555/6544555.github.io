@@ -5,7 +5,7 @@ import { extname, resolve, sep } from 'node:path'
 const root = resolve(process.argv[2] ?? 'dist')
 const port = Number(process.argv[3] ?? '4174')
 const host = process.argv[4] ?? '127.0.0.1'
-const basePath = '/birthday-memory/'
+const basePath = '/%E6%81%8B%E7%88%B1%E6%97%A5%E5%BF%97/'
 
 const mimeTypes = {
   '.css': 'text/css; charset=utf-8',
@@ -40,15 +40,26 @@ const server = createServer((request, response) => {
     response.end()
     return
   }
+  if (pathname === '/' || pathname === '/index.html') {
+    const redirect = resolve(root, 'index.html')
+    if (existsSync(redirect)) sendFile(response, redirect)
+    else {
+      response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+      response.end('Not found')
+    }
+    return
+  }
+
   if (!pathname.startsWith(basePath)) {
     response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
     response.end('Not found')
     return
   }
 
+  const siteRoot = resolve(root, '恋爱日志')
   const relative = decodeURIComponent(pathname.slice(basePath.length)) || 'index.html'
-  let filePath = resolve(root, relative)
-  if (filePath !== root && !filePath.startsWith(`${root}${sep}`)) {
+  let filePath = resolve(siteRoot, relative)
+  if (filePath !== siteRoot && !filePath.startsWith(`${siteRoot}${sep}`)) {
     response.writeHead(403)
     response.end()
     return

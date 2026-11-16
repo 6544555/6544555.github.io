@@ -275,7 +275,7 @@
 参数：Vite `BASE_URL` 与可选自定义 URL。  
 返回：可直接赋给 `<audio src>` 的地址。  
 建议 UI：登录后才挂载；音频失败不影响主业务。  
-示例：`resolveMusicUrl('/birthday-memory/', 'audio/custom.mp3')`
+示例：`resolveMusicUrl('/恋爱日志/', 'audio/custom.mp3')`
 
 ### `BackgroundMusic()`
 说明：提供循环背景音乐的播放/暂停、自选上传、恢复默认、偏好恢复、错误降级和卸载暂停。

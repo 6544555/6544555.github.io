@@ -1,4 +1,4 @@
-const CACHE_NAME = 'birthday-memory-static-v4'
+const CACHE_NAME = 'love-journal-static-v5'
 const scopeUrl = new URL(self.registration.scope)
 const scopePath = scopeUrl.pathname.endsWith('/')
   ? scopeUrl.pathname

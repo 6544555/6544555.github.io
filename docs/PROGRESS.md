@@ -16,7 +16,7 @@
 | S4 跨浏览器共享 | 完成 | 两个独立 Edge profile 用同一共享账号完成 A 写入、B 读取、删除同步和离线验证 |
 | S4 本地 Git | 完成 | `main` 根提交已创建；`.env` 历史 0 条、索引未命中、工作区干净 |
 | S4 GitHub Actions/Pages | 完成 | Pages run #2 成功；keepalive run #1 成功，Auth/REST 均 HTTP 200 |
-| 线上地址 | 可用 | https://6544555.github.io/birthday-memory/ ，线上共享账号登录通过 |
+| 线上地址 | 可用 | https://6544555.github.io/恋爱日志/ ，线上共享账号登录通过 |
 | 整体交付 | DONE | 本地门禁、真实 Supabase、独立复审、Git 隔离、Pages 与保活全部完成 |
 
 ## 最新门禁
@@ -49,7 +49,7 @@ BUILD_EXIT_CODE=0
 
 ## 发布
 
-- 线上站点：https://6544555.github.io/birthday-memory/
-- GitHub 仓库：https://github.com/6544555/birthday-memory
+- 线上站点：https://6544555.github.io/恋爱日志/
+- GitHub 仓库：https://github.com/6544555/6544555.github.io
 - Pages 与 keepalive 成功日志见 `docs/evidence/A24-github-actions-20261114.txt`。
 - 非 P0 风险仍记录在 `docs/REVIEW.md`，不阻塞当前可用交付。

@@ -22,7 +22,7 @@ describe('public shell isolation', () => {
   it('does not precache content data or photos in the service worker', () => {
     const source = readFileSync(new URL('../public/sw.js', import.meta.url), 'utf8')
 
-    expect(source).toContain('birthday-memory-static-v4')
+    expect(source).toContain('love-journal-static-v5')
     expect(source).toContain("url.pathname.endsWith('/content.json')")
     expect(source).toContain("url.pathname.includes('/memories/')")
     expect(source).not.toContain('contentUrl')
