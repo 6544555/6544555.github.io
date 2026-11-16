@@ -43,7 +43,7 @@
 ## src/lib/supabase.ts
 
 ### `getClient(): SupabaseClient`
-说明：创建并复用唯一的 Supabase 客户端；所有请求带 8 秒 AbortController 超时。  
+说明：创建并复用唯一的 Supabase 客户端；普通请求带 8 秒 AbortController 超时，文件 Blob 上传放宽到 5 分钟。  
 参数：无；URL 和公开 key 从 `VITE_SUPABASE_*` 环境变量读取。  
 可能抛：配置缺失或超时时抛 `CloudError('DEGRADED')`。  
 建议 UI：启动失败保留静态内容，状态进入 `DEGRADED`。  

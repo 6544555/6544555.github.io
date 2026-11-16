@@ -1,12 +1,19 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
-import { REQUEST_TIMEOUT_MS } from '../config'
+import { REQUEST_TIMEOUT_MS, UPLOAD_TIMEOUT_MS } from '../config'
 import { CloudError } from '../types'
 
 let client: SupabaseClient | undefined
 
+function timeoutForBody(body: BodyInit | null | undefined): number {
+  return typeof Blob !== 'undefined' && body instanceof Blob
+    ? UPLOAD_TIMEOUT_MS
+    : REQUEST_TIMEOUT_MS
+}
+
 const fetchWithTimeout: typeof fetch = async (input, init = {}) => {
   const controller = new AbortController()
   let timedOut = false
+  const timeoutMs = timeoutForBody(init.body)
   const externalSignal = init.signal
 
   const abortFromExternalSignal = () => {
@@ -22,7 +29,7 @@ const fetchWithTimeout: typeof fetch = async (input, init = {}) => {
   const timeoutId = setTimeout(() => {
     timedOut = true
     controller.abort()
-  }, REQUEST_TIMEOUT_MS)
+  }, timeoutMs)
 
   try {
     return await fetch(input, { ...init, signal: controller.signal })
@@ -31,7 +38,7 @@ const fetchWithTimeout: typeof fetch = async (input, init = {}) => {
       throw new CloudError(
         'DEGRADED',
         'CLOUD_TIMEOUT',
-        '云端请求超过 8 秒',
+        `云端请求超过 ${timeoutMs / 1_000} 秒`,
       )
     }
 

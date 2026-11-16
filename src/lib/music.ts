@@ -157,12 +157,13 @@ async function removeOtherTracks(keepPath: string): Promise<void> {
 export async function uploadCustomMusic(file: File): Promise<StoredMusicTrack> {
   const info = assertMusicFile(file)
   const path = `${MUSIC_PREFIX}/background.${info.extension}`
+  const payload = file.type === info.mimeType ? file : new Blob([file], { type: info.mimeType })
   let lastError: unknown
 
   for (let attempt = 0; attempt < 3; attempt += 1) {
     const { error } = await getClient()
       .storage.from(MUSIC_BUCKET)
-      .upload(path, file, {
+      .upload(path, payload, {
         cacheControl: '3600',
         contentType: info.mimeType,
         upsert: true,
@@ -182,6 +183,8 @@ export async function uploadCustomMusic(file: File): Promise<StoredMusicTrack> {
     }
 
     lastError = error
+    const status = (error as StorageErrorLike).status ?? (error as StorageErrorLike).statusCode
+    if (status && status >= 400 && status < 500 && status !== 408 && status !== 429) break
     if (attempt < 2) await wait(300 * (attempt + 1))
   }
 
