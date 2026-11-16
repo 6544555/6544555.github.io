@@ -42,6 +42,8 @@ child.on('exit', (code, signal) => {
 </html>
 `
     writeFileSync(join(distDirectory, 'index.html'), redirect)
+    mkdirSync(join(distDirectory, 'birthday-memory'), { recursive: true })
+    writeFileSync(join(distDirectory, 'birthday-memory', 'index.html'), redirect)
   }
 
   if (signal) {

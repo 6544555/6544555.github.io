@@ -4,6 +4,8 @@ import { getClient } from './supabase'
 import type { AuthReason, AuthState, AuthUser } from '../types'
 
 const AUTHENTICATED_USER_CACHE_KEY = 'bday:v2:authenticated-user'
+const AUTH_RESTORE_TIMEOUT_MS = 10_000
+const SIGN_IN_BUDGET_MS = 8_000
 export const SHARED_LOGIN_USERNAME = 'gt011120'
 let authWarmPromise: Promise<void> | null = null
 
@@ -139,7 +141,7 @@ export function warmAuthConnection(): Promise<void> {
   return authWarmPromise
 }
 
-export async function restoreSession(): Promise<AuthState> {
+async function restoreSessionOnce(): Promise<AuthState> {
   if (isOffline()) {
     const cached = readCachedAuthenticatedUser()
     return cached
@@ -153,6 +155,23 @@ export async function restoreSession(): Promise<AuthState> {
     return stateForSession(data.session)
   } catch (error) {
     return { status: 'DEGRADED', reason: reasonFor(error) }
+  }
+}
+
+export async function restoreSession(): Promise<AuthState> {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined
+  try {
+    return await Promise.race([
+      restoreSessionOnce(),
+      new Promise<AuthState>((resolve) => {
+        timeoutId = setTimeout(
+          () => resolve({ status: 'SIGNED_OUT', reason: 'CLOUD_TIMEOUT' }),
+          AUTH_RESTORE_TIMEOUT_MS,
+        )
+      }),
+    ])
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId)
   }
 }
 
@@ -182,7 +201,7 @@ export async function signIn(account: string, password: string): Promise<AuthSta
     if (
       lastReason !== 'CLOUD_UNAVAILABLE' ||
       attempt === 9 ||
-      Date.now() - startedAt >= 1800
+      Date.now() - startedAt >= SIGN_IN_BUDGET_MS
     ) {
       break
     }
